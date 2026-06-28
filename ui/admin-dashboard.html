@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>داشبورد مدیریت | لوکس‌بیوتی</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --rose-gold: #C9A96E;
+      --rose-gold-dark: #b8935a;
+      --rose-gold-light: rgba(201,169,110,0.1);
+      --white: #FAFAFA;
+      --black: #1A1A1A;
+      --pink-light: #F8E8EE;
+      --sidebar-bg: #141414;
+      --sidebar-width: 260px;
+      --gray-light: #f5f5f5;
+      --gray-mid: #e0e0e0;
+      --text-muted: #888;
+    }
+    * { font-family: 'Vazirmatn', sans-serif; box-sizing: border-box; }
+    body { background: var(--gray-light); color: var(--black); margin: 0; }
+
+    /* Sidebar */
+    .sidebar { width: var(--sidebar-width); background: var(--sidebar-bg); height: 100vh; position: fixed; top: 0; right: 0; z-index: 1000; display: flex; flex-direction: column; transition: width 0.3s; overflow-y: auto; }
+    .sidebar-logo { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .sidebar-logo .logo { font-size: 1.4rem; font-weight: 800; color: var(--rose-gold); }
+    .sidebar-logo .logo span { color: white; }
+    .sidebar-logo .subtitle { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
+    .sidebar-nav { padding: 1rem 0; flex: 1; }
+    .nav-section-title { font-size: 0.68rem; font-weight: 700; color: rgba(255,255,255,0.25); letter-spacing: 1.5px; text-transform: uppercase; padding: 1rem 1.5rem 0.4rem; }
+    .sidebar-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.75rem 1.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: all 0.2s; position: relative; cursor: pointer; }
+    .sidebar-item:hover { color: white; background: rgba(255,255,255,0.05); }
+    .sidebar-item.active { color: var(--rose-gold); background: rgba(201,169,110,0.1); border-left: none; border-right: 3px solid var(--rose-gold); }
+    .sidebar-item i { width: 18px; text-align: center; font-size: 0.95rem; }
+    .sidebar-item .badge { background: var(--rose-gold); color: white; font-size: 0.65rem; padding: 0.15rem 0.4rem; border-radius: 8px; margin-right: auto; }
+    .sidebar-item .badge-red { background: #e74c3c; }
+    .sidebar-bottom { padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.07); }
+    .admin-profile { display: flex; align-items: center; gap: 0.8rem; }
+    .admin-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--rose-gold); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+    .admin-name { font-size: 0.85rem; font-weight: 700; color: white; }
+    .admin-role { font-size: 0.72rem; color: rgba(255,255,255,0.4); }
+
+    /* Main Content */
+    .main-content { margin-right: var(--sidebar-width); min-height: 100vh; }
+
+    /* Topbar */
+    .topbar { background: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+    .topbar-title { font-size: 1.1rem; font-weight: 800; color: var(--black); }
+    .topbar-actions { display: flex; align-items: center; gap: 1.2rem; }
+    .topbar-icon { color: var(--text-muted); font-size: 1.1rem; cursor: pointer; position: relative; transition: color 0.2s; }
+    .topbar-icon:hover { color: var(--rose-gold); }
+    .notif-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #e74c3c; border-radius: 50%; }
+    .topbar-date { font-size: 0.82rem; color: var(--text-muted); background: var(--gray-light); padding: 0.4rem 0.8rem; border-radius: 20px; }
+    .btn-sidebar-toggle { background: none; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; display: none; }
+    @media (max-width: 768px) { .sidebar { width: 0; overflow: hidden; } .main-content { margin-right: 0; } .sidebar.open { width: var(--sidebar-width); } .btn-sidebar-toggle { display: block; } .topbar { padding: 1rem; } }
+
+    /* Dashboard Content */
+    .dashboard-content { padding: 2rem; }
+
+    /* Stat Cards */
+    .stat-card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 3px 15px rgba(0,0,0,0.06); position: relative; overflow: hidden; transition: transform 0.2s; }
+    .stat-card:hover { transform: translateY(-3px); }
+    .stat-card::after { content: ''; position: absolute; bottom: -20px; left: -20px; width: 80px; height: 80px; border-radius: 50%; opacity: 0.08; }
+    .stat-card.gold::after { background: var(--rose-gold); }
+    .stat-card.green::after { background: #27ae60; }
+    .stat-card.blue::after { background: #3498db; }
+    .stat-card.red::after { background: #e74c3c; }
+    .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1rem; }
+    .icon-gold { background: rgba(201,169,110,0.15); color: var(--rose-gold); }
+    .icon-green { background: rgba(39,174,96,0.12); color: #27ae60; }
+    .icon-blue { background: rgba(52,152,219,0.12); color: #3498db; }
+    .icon-red { background: rgba(231,76,60,0.12); color: #e74c3c; }
+    .icon-purple { background: rgba(142,68,173,0.12); color: #8e44ad; }
+    .stat-value { font-size: 1.8rem; font-weight: 800; color: var(--black); line-height: 1; margin-bottom: 0.3rem; }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+    .stat-change { font-size: 0.78rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem; }
+    .stat-change.up { color: #27ae60; }
+    .stat-change.down { color: #e74c3c; }
+
+    /* Charts */
+    .chart-card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 3px 15px rgba(0,0,0,0.06); }
+    .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
+    .chart-title { font-size: 1rem; font-weight: 800; color: var(--black); }
+    .chart-period { display: flex; gap: 0.4rem; }
+    .period-btn { padding: 0.3rem 0.8rem; border-radius: 15px; border: 1.5px solid var(--gray-mid); background: white; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Vazirmatn', sans-serif; }
+    .period-btn.active { background: var(--rose-gold); border-color: var(--rose-gold); color: white; }
+
+    /* Tables */
+    .table-card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 3px 15px rgba(0,0,0,0.06); }
+    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem; }
+    .table-title { font-size: 1rem; font-weight: 800; color: var(--black); }
+    .btn-view-all { background: none; border: 1.5px solid var(--rose-gold); color: var(--rose-gold); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: 'Vazirmatn', sans-serif; transition: all 0.2s; }
+    .btn-view-all:hover { background: var(--rose-gold); color: white; }
+    .table { font-size: 0.88rem; }
+    .table th { font-weight: 700; color: #555; border-bottom: 2px solid var(--gray-mid); padding: 0.75rem 0.8rem; white-space: nowrap; font-size: 0.82rem; }
+    .table td { padding: 0.75rem 0.8rem; vertical-align: middle; border-bottom: 1px solid var(--gray-light); color: var(--black); }
+    .table tbody tr:hover { background: #fafafa; }
+    .table tbody tr:last-child td { border-bottom: none; }
+    .order-status { padding: 0.25rem 0.7rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700; display: inline-block; white-space: nowrap; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-processing { background: #cce5ff; color: #004085; }
+    .status-shipped { background: #d4edda; color: #155724; }
+    .status-delivered { background: #d4edda; color: #155724; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+    .order-id { font-weight: 700; color: var(--rose-gold); }
+    .product-thumb-table { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
+    .stock-level { display: flex; align-items: center; gap: 0.5rem; }
+    .stock-bar { flex: 1; height: 6px; background: var(--gray-mid); border-radius: 3px; overflow: hidden; max-width: 80px; }
+    .stock-fill { height: 100%; border-radius: 3px; }
+    .stock-critical .stock-fill { background: #e74c3c; }
+    .stock-low-color .stock-fill { background: #f39c12; }
+    .stock-ok .stock-fill { background: #27ae60; }
+
+    /* Mini stat row */
+    .mini-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--gray-mid); }
+    .mini-stat { text-align: center; }
+    .mini-stat .val { font-size: 1.1rem; font-weight: 800; color: var(--black); }
+    .mini-stat .lbl { font-size: 0.72rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo">لوکس<span>بیوتی</span></div>
+    <div class="subtitle">پنل مدیریت فروشگاه</div>
+  </div>
+
+  <div class="sidebar-nav">
+    <span class="nav-section-title">اصلی</span>
+    <a class="sidebar-item active" href="#"><i class="fas fa-tachometer-alt"></i> داشبورد</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-chart-bar"></i> گزارشات <span class="badge">جدید</span></a>
+
+    <span class="nav-section-title">فروشگاه</span>
+    <a class="sidebar-item" href="#"><i class="fas fa-box"></i> محصولات</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-th-large"></i> دسته‌بندی‌ها</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-tags"></i> برندها</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-image"></i> بنرها</a>
+
+    <span class="nav-section-title">سفارشات</span>
+    <a class="sidebar-item" href="#"><i class="fas fa-shopping-cart"></i> سفارشات <span class="badge badge-red">۱۲</span></a>
+    <a class="sidebar-item" href="#"><i class="fas fa-undo"></i> مرجوعات</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-truck"></i> حمل‌ونقل</a>
+
+    <span class="nav-section-title">مدیریت</span>
+    <a class="sidebar-item" href="#"><i class="fas fa-users"></i> کاربران</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-percent"></i> کدهای تخفیف</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-star"></i> نظرات</a>
+    <a class="sidebar-item" href="#"><i class="fas fa-cog"></i> تنظیمات</a>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="admin-profile">
+      <div class="admin-avatar">م</div>
+      <div>
+        <div class="admin-name">مدیر سیستم</div>
+        <div class="admin-role">Admin • آنلاین</div>
+      </div>
+      <i class="fas fa-sign-out-alt" style="color:rgba(255,255,255,0.3);cursor:pointer;margin-right:auto;" title="خروج"></i>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn-sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="topbar-title">داشبورد مدیریت</div>
+    </div>
+    <div class="topbar-actions">
+      <span class="topbar-date"><i class="far fa-calendar-alt me-1"></i> ۸ خرداد ۱۴۰۳</span>
+      <span class="topbar-icon" title="اعلان‌ها">
+        <i class="far fa-bell"></i>
+        <span class="notif-dot"></span>
+      </span>
+      <span class="topbar-icon" title="پیام‌ها"><i class="far fa-envelope"></i></span>
+      <span class="topbar-icon" title="تنظیمات"><i class="fas fa-cog"></i></span>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-content">
+
+    <!-- Welcome Banner -->
+    <div style="background:linear-gradient(135deg,#1A1A1A 0%,#2d1f2e 100%);border-radius:16px;padding:1.5rem 2rem;margin-bottom:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h4 style="color:white;font-weight:800;margin:0 0 0.3rem;">سلام، مدیر عزیز! 👋</h4>
+        <p style="color:rgba(255,255,255,0.6);margin:0;font-size:0.88rem;">امروز ۱۲ سفارش جدید دارید که منتظر بررسی است.</p>
+      </div>
+      <button style="background:var(--rose-gold);color:white;border:none;padding:0.7rem 1.8rem;border-radius:12px;font-family:'Vazirmatn',sans-serif;font-weight:700;cursor:pointer;font-size:0.9rem;">مشاهده سفارشات</button>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card gold">
+          <div class="stat-icon icon-gold"><i class="fas fa-money-bill-wave"></i></div>
+          <div class="stat-value">۴۸.۲M</div>
+          <div class="stat-label">فروش امروز (تومان)</div>
+          <div class="stat-change up"><i class="fas fa-arrow-up"></i> ۱۲.۵٪ نسبت به دیروز</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card green">
+          <div class="stat-icon icon-green"><i class="fas fa-shopping-cart"></i></div>
+          <div class="stat-value">۱۲</div>
+          <div class="stat-label">سفارشات جدید امروز</div>
+          <div class="stat-change up"><i class="fas fa-arrow-up"></i> ۸ سفارش در انتظار</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card blue">
+          <div class="stat-icon icon-blue"><i class="fas fa-user-plus"></i></div>
+          <div class="stat-value">۷</div>
+          <div class="stat-label">کاربران جدید امروز</div>
+          <div class="stat-change up"><i class="fas fa-arrow-up"></i> ۱۴٪ این هفته</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card red">
+          <div class="stat-icon icon-red"><i class="fas fa-exclamation-triangle"></i></div>
+          <div class="stat-value">۵</div>
+          <div class="stat-label">محصول کم‌موجودی</div>
+          <div class="stat-change down"><i class="fas fa-arrow-down"></i> نیاز به سفارش مجدد</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+      <!-- Sales Chart -->
+      <div class="col-lg-8">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title"><i class="fas fa-chart-line me-2" style="color:var(--rose-gold);"></i> نمودار فروش</div>
+            <div class="chart-period">
+              <button class="period-btn">روزانه</button>
+              <button class="period-btn active">هفتگی</button>
+              <button class="period-btn">ماهانه</button>
+            </div>
+          </div>
+          <canvas id="salesChart" height="100"></canvas>
+          <div class="mini-stats">
+            <div class="mini-stat"><div class="val">۳۲۵M</div><div class="lbl">فروش هفته</div></div>
+            <div class="mini-stat"><div class="val">۸۴</div><div class="lbl">سفارش هفته</div></div>
+            <div class="mini-stat"><div class="val">۳.۸M</div><div class="lbl">میانگین سفارش</div></div>
+            <div class="mini-stat"><div class="val">۱۲٪ ↑</div><div class="lbl">رشد هفته</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Category Pie Chart -->
+      <div class="col-lg-4">
+        <div class="chart-card" style="height:100%;">
+          <div class="chart-header">
+            <div class="chart-title"><i class="fas fa-chart-pie me-2" style="color:var(--rose-gold);"></i> فروش بر اساس دسته‌بندی</div>
+          </div>
+          <canvas id="categoryChart" height="180"></canvas>
+          <div class="mt-3">
+            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size:0.8rem;">
+              <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;background:#C9A96E;border-radius:50%;display:inline-block;"></span>مراقبت پوست</span>
+              <span style="font-weight:700;">۳۸٪</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size:0.8rem;">
+              <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;background:#e74c3c;border-radius:50%;display:inline-block;"></span>عطر و ادکلن</span>
+              <span style="font-weight:700;">۲۶٪</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size:0.8rem;">
+              <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;background:#3498db;border-radius:50%;display:inline-block;"></span>مردانه</span>
+              <span style="font-weight:700;">۱۸٪</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size:0.8rem;">
+              <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;background:#27ae60;border-radius:50%;display:inline-block;"></span>مراقبت مو</span>
+              <span style="font-weight:700;">۱۲٪</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center" style="font-size:0.8rem;">
+              <span style="display:flex;align-items:center;gap:0.4rem;"><span style="width:10px;height:10px;background:#8e44ad;border-radius:50%;display:inline-block;"></span>سایر</span>
+              <span style="font-weight:700;">۶٪</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders & Low Stock Tables -->
+    <div class="row g-4">
+      <!-- Recent Orders -->
+      <div class="col-lg-7">
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title"><i class="fas fa-list-alt me-2" style="color:var(--rose-gold);"></i> آخرین سفارشات</div>
+            <button class="btn-view-all">مشاهده همه</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>شماره سفارش</th>
+                  <th>مشتری</th>
+                  <th>مبلغ</th>
+                  <th>تعداد</th>
+                  <th>وضعیت</th>
+                  <th>تاریخ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="order-id">#۱۰۰۴۵</span></td>
+                  <td>سارا محمدی</td>
+                  <td style="font-weight:700;">۱,۴۵۰,۰۰۰ ت</td>
+                  <td>۳</td>
+                  <td><span class="order-status status-pending">در انتظار</span></td>
+                  <td style="color:var(--text-muted);">۰۸/۰۳/۱۴۰۳</td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#۱۰۰۴۴</span></td>
+                  <td>علی رضایی</td>
+                  <td style="font-weight:700;">۲,۱۸۰,۰۰۰ ت</td>
+                  <td>۵</td>
+                  <td><span class="order-status status-processing">در حال پردازش</span></td>
+                  <td style="color:var(--text-muted);">۰۷/۰۳/۱۴۰۳</td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#۱۰۰۴۳</span></td>
+                  <td>مریم احمدی</td>
+                  <td style="font-weight:700;">۸۵۰,۰۰۰ ت</td>
+                  <td>۱</td>
+                  <td><span class="order-status status-shipped">ارسال شد</span></td>
+                  <td style="color:var(--text-muted);">۰۷/۰۳/۱۴۰۳</td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#۱۰۰۴۲</span></td>
+                  <td>فاطمه حسینی</td>
+                  <td style="font-weight:700;">۳۲۵,۰۰۰ ت</td>
+                  <td>۲</td>
+                  <td><span class="order-status status-delivered">تحویل شد</span></td>
+                  <td style="color:var(--text-muted);">۰۶/۰۳/۱۴۰۳</td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#۱۰۰۴۱</span></td>
+                  <td>رضا کریمی</td>
+                  <td style="font-weight:700;">۱,۶۸۰,۰۰۰ ت</td>
+                  <td>۱</td>
+                  <td><span class="order-status status-delivered">تحویل شد</span></td>
+                  <td style="color:var(--text-muted);">۰۶/۰۳/۱۴۰۳</td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#۱۰۰۴۰</span></td>
+                  <td>نگار صادقی</td>
+                  <td style="font-weight:700;">۵۶۵,۰۰۰ ت</td>
+                  <td>۴</td>
+                  <td><span class="order-status status-cancelled">لغو شد</span></td>
+                  <td style="color:var(--text-muted);">۰۵/۰۳/۱۴۰۳</td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#۱۰۰۳۹</span></td>
+                  <td>حسن موسوی</td>
+                  <td style="font-weight:700;">۹۸,۰۰۰ ت</td>
+                  <td>۱</td>
+                  <td><span class="order-status status-delivered">تحویل شد</span></td>
+                  <td style="color:var(--text-muted);">۰۵/۰۳/۱۴۰۳</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Low Stock Products -->
+      <div class="col-lg-5">
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title"><i class="fas fa-exclamation-circle me-2" style="color:#e74c3c;"></i> محصولات کم‌موجودی</div>
+            <button class="btn-view-all">مدیریت موجودی</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>محصول</th>
+                  <th>موجودی</th>
+                  <th>وضعیت</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img src="https://picsum.photos/40/40?random=300" class="product-thumb-table" alt="">
+                      <div>
+                        <div style="font-weight:700;font-size:0.85rem;">ادکلن Sauvage دیور</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">دیور</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="stock-level stock-critical">
+                      <div class="stock-bar"><div class="stock-fill" style="width:10%;"></div></div>
+                      <span style="font-size:0.8rem;font-weight:700;color:#e74c3c;">۲</span>
+                    </div>
+                  </td>
+                  <td><span class="order-status status-cancelled">بحرانی</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img src="https://picsum.photos/40/40?random=301" class="product-thumb-table" alt="">
+                      <div>
+                        <div style="font-weight:700;font-size:0.85rem;">رژلب شانل Rouge Allure</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">شانل</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="stock-level stock-low-color">
+                      <div class="stock-bar"><div class="stock-fill" style="width:25%;background:#f39c12;"></div></div>
+                      <span style="font-size:0.8rem;font-weight:700;color:#f39c12;">۵</span>
+                    </div>
+                  </td>
+                  <td><span class="order-status status-pending">کم</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img src="https://picsum.photos/40/40?random=302" class="product-thumb-table" alt="">
+                      <div>
+                        <div style="font-weight:700;font-size:0.85rem;">عطر Miss Dior</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">دیور</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="stock-level stock-low-color">
+                      <div class="stock-bar"><div class="stock-fill" style="width:30%;background:#f39c12;"></div></div>
+                      <span style="font-size:0.8rem;font-weight:700;color:#f39c12;">۶</span>
+                    </div>
+                  </td>
+                  <td><span class="order-status status-pending">کم</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img src="https://picsum.photos/40/40?random=303" class="product-thumb-table" alt="">
+                      <div>
+                        <div style="font-weight:700;font-size:0.85rem;">سرم ویتامین C نیوآ</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">نیوآ</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="stock-level stock-critical">
+                      <div class="stock-bar"><div class="stock-fill" style="width:15%;"></div></div>
+                      <span style="font-size:0.8rem;font-weight:700;color:#e74c3c;">۳</span>
+                    </div>
+                  </td>
+                  <td><span class="order-status status-cancelled">بحرانی</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img src="https://picsum.photos/40/40?random=304" class="product-thumb-table" alt="">
+                      <div>
+                        <div style="font-weight:700;font-size:0.85rem;">کرم BB مایبلین SPF20</div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);">مایبلین</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="stock-level stock-ok">
+                      <div class="stock-bar"><div class="stock-fill" style="width:45%;background:#27ae60;"></div></div>
+                      <span style="font-size:0.8rem;font-weight:700;color:#27ae60;">۹</span>
+                    </div>
+                  </td>
+                  <td><span class="order-status status-processing">متوسط</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="table-card mt-4">
+          <div class="table-title mb-3"><i class="fas fa-bolt me-2" style="color:var(--rose-gold);"></i> دسترسی سریع</div>
+          <div class="row g-2">
+            <div class="col-6">
+              <button style="width:100%;background:rgba(201,169,110,0.1);border:1.5px solid rgba(201,169,110,0.3);border-radius:10px;padding:0.7rem;font-family:'Vazirmatn',sans-serif;font-size:0.82rem;font-weight:700;color:var(--rose-gold);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='var(--rose-gold)';this.style.color='white';" onmouseout="this.style.background='rgba(201,169,110,0.1)';this.style.color='var(--rose-gold)';">
+                <i class="fas fa-plus-circle d-block mb-1" style="font-size:1.2rem;"></i> محصول جدید
+              </button>
+            </div>
+            <div class="col-6">
+              <button style="width:100%;background:rgba(52,152,219,0.08);border:1.5px solid rgba(52,152,219,0.3);border-radius:10px;padding:0.7rem;font-family:'Vazirmatn',sans-serif;font-size:0.82rem;font-weight:700;color:#3498db;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#3498db';this.style.color='white';" onmouseout="this.style.background='rgba(52,152,219,0.08)';this.style.color='#3498db';">
+                <i class="fas fa-file-invoice d-block mb-1" style="font-size:1.2rem;"></i> گزارش مالی
+              </button>
+            </div>
+            <div class="col-6">
+              <button style="width:100%;background:rgba(39,174,96,0.08);border:1.5px solid rgba(39,174,96,0.3);border-radius:10px;padding:0.7rem;font-family:'Vazirmatn',sans-serif;font-size:0.82rem;font-weight:700;color:#27ae60;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#27ae60';this.style.color='white';" onmouseout="this.style.background='rgba(39,174,96,0.08)';this.style.color='#27ae60';">
+                <i class="fas fa-users d-block mb-1" style="font-size:1.2rem;"></i> مدیریت کاربران
+              </button>
+            </div>
+            <div class="col-6">
+              <button style="width:100%;background:rgba(231,76,60,0.08);border:1.5px solid rgba(231,76,60,0.3);border-radius:10px;padding:0.7rem;font-family:'Vazirmatn',sans-serif;font-size:0.82rem;font-weight:700;color:#e74c3c;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#e74c3c';this.style.color='white';" onmouseout="this.style.background='rgba(231,76,60,0.08)';this.style.color='#e74c3c';">
+                <i class="fas fa-tags d-block mb-1" style="font-size:1.2rem;"></i> کد تخفیف
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end dashboard-content -->
+</div><!-- end main-content -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Sales Chart
+  const salesCtx = document.getElementById('salesChart').getContext('2d');
+  new Chart(salesCtx, {
+    type: 'bar',
+    data: {
+      labels: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'],
+      datasets: [
+        {
+          label: 'فروش (میلیون تومان)',
+          data: [38.5, 42.1, 35.8, 52.3, 48.7, 61.2, 46.8],
+          backgroundColor: 'rgba(201,169,110,0.15)',
+          borderColor: '#C9A96E',
+          borderWidth: 2,
+          borderRadius: 8,
+          borderSkipped: false,
+        },
+        {
+          label: 'سفارشات',
+          data: [10, 12, 9, 15, 13, 18, 12],
+          backgroundColor: 'rgba(52,152,219,0.1)',
+          borderColor: '#3498db',
+          borderWidth: 2,
+          borderRadius: 8,
+          borderSkipped: false,
+          yAxisID: 'y2',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: 'top', labels: { font: { family: 'Vazirmatn' }, usePointStyle: true } },
+        tooltip: { bodyFont: { family: 'Vazirmatn' }, titleFont: { family: 'Vazirmatn' } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: 'Vazirmatn' } } },
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'Vazirmatn' } } },
+        y2: { position: 'left', grid: { display: false }, ticks: { font: { family: 'Vazirmatn' } } }
+      }
+    }
+  });
+
+  // Category Pie Chart
+  const catCtx = document.getElementById('categoryChart').getContext('2d');
+  new Chart(catCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['مراقبت پوست', 'عطر و ادکلن', 'مردانه', 'مراقبت مو', 'سایر'],
+      datasets: [{
+        data: [38, 26, 18, 12, 6],
+        backgroundColor: ['#C9A96E', '#e74c3c', '#3498db', '#27ae60', '#8e44ad'],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '65%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { bodyFont: { family: 'Vazirmatn' }, titleFont: { family: 'Vazirmatn' } }
+      }
+    }
+  });
+
+  // Period buttons
+  document.querySelectorAll('.period-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Sidebar toggle
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+
+  // Sidebar nav active
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

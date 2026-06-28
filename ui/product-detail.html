@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>کرم مرطوب‌کننده روزانه SPF30 | لوکس‌بیوتی</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --rose-gold: #C9A96E;
+      --rose-gold-dark: #b8935a;
+      --white: #FAFAFA;
+      --black: #1A1A1A;
+      --pink-light: #F8E8EE;
+      --gray-light: #f5f5f5;
+      --gray-mid: #e0e0e0;
+      --text-muted: #888;
+    }
+    * { font-family: 'Vazirmatn', sans-serif; }
+    body { background: var(--gray-light); color: var(--black); }
+
+    /* Navbar */
+    .navbar { background: var(--black) !important; padding: 1rem 0; box-shadow: 0 2px 20px rgba(201,169,110,0.2); }
+    .navbar-brand { font-size: 1.6rem; font-weight: 800; color: var(--rose-gold) !important; }
+    .navbar-brand span { color: var(--white); }
+    .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 500; transition: color 0.3s; }
+    .nav-link:hover { color: var(--rose-gold) !important; }
+    .navbar-toggler { border-color: var(--rose-gold); }
+    .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28201,169,110,1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
+    .nav-icon { color: var(--rose-gold) !important; font-size: 1.2rem; position: relative; }
+    .cart-badge { position: absolute; top: -8px; right: -8px; background: var(--rose-gold); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+    /* Breadcrumb */
+    .page-header { background: white; padding: 1rem 0; border-bottom: 1px solid var(--gray-mid); }
+    .breadcrumb-item a { color: var(--rose-gold); text-decoration: none; }
+    .breadcrumb-item.active { color: var(--text-muted); }
+    .breadcrumb-item+.breadcrumb-item::before { color: var(--text-muted); }
+
+    /* Product Detail */
+    .product-detail-card { background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 5px 30px rgba(0,0,0,0.07); }
+
+    /* Gallery */
+    .gallery-main { border-radius: 16px; overflow: hidden; background: var(--pink-light); position: relative; }
+    .gallery-main img { width: 100%; height: 450px; object-fit: cover; transition: opacity 0.3s; cursor: zoom-in; }
+    .gallery-badge { position: absolute; top: 15px; right: 15px; z-index: 2; }
+    .gallery-thumbs { display: flex; gap: 0.6rem; margin-top: 0.8rem; flex-wrap: wrap; }
+    .thumb-item { width: 75px; height: 75px; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; flex-shrink: 0; }
+    .thumb-item.active { border-color: var(--rose-gold); }
+    .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb-item:hover { border-color: var(--rose-gold); }
+    .wishlist-btn { position: absolute; top: 15px; left: 15px; z-index: 2; width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border: none; color: var(--text-muted); font-size: 1rem; transition: all 0.2s; }
+    .wishlist-btn:hover, .wishlist-btn.active { background: var(--pink-light); color: #e74c3c; }
+
+    /* Product Info */
+    .product-brand-tag { background: var(--pink-light); color: var(--rose-gold); font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.9rem; border-radius: 15px; display: inline-block; margin-bottom: 0.8rem; }
+    .product-title { font-size: 1.6rem; font-weight: 800; color: var(--black); line-height: 1.4; margin-bottom: 0.8rem; }
+    .product-rating { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+    .stars { color: #f39c12; font-size: 1rem; }
+    .rating-text { color: var(--text-muted); font-size: 0.88rem; }
+    .rating-text a { color: var(--rose-gold); text-decoration: none; }
+    .divider { border: none; border-top: 1px solid var(--gray-mid); margin: 1.2rem 0; }
+
+    /* Price */
+    .price-section { display: flex; align-items: flex-end; gap: 1.2rem; margin-bottom: 1.5rem; }
+    .price-current { font-size: 2rem; font-weight: 800; color: var(--rose-gold); line-height: 1; }
+    .price-original { font-size: 1.1rem; color: var(--text-muted); text-decoration: line-through; }
+    .discount-badge { background: #e74c3c; color: white; font-size: 0.82rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 8px; }
+
+    /* Stock */
+    .stock-indicator { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .stock-dot { width: 10px; height: 10px; border-radius: 50%; background: #27ae60; flex-shrink: 0; }
+    .stock-low { background: #f39c12; }
+    .stock-out { background: #e74c3c; }
+    .stock-count { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+
+    /* Color/Variant Selection */
+    .variant-section { margin-bottom: 1.5rem; }
+    .variant-label { font-size: 0.9rem; font-weight: 700; color: var(--black); margin-bottom: 0.7rem; display: flex; align-items: center; gap: 0.5rem; }
+    .variant-label span { color: var(--rose-gold); font-weight: 400; }
+    .color-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .color-opt { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; position: relative; }
+    .color-opt.active, .color-opt:hover { border-color: var(--black); transform: scale(1.15); }
+    .size-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .size-opt { padding: 0.4rem 1.2rem; border-radius: 20px; border: 2px solid var(--gray-mid); background: white; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Vazirmatn', sans-serif; }
+    .size-opt.active, .size-opt:hover { border-color: var(--rose-gold); background: var(--rose-gold); color: white; }
+
+    /* Quantity & Cart */
+    .quantity-cart { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .quantity-control { display: flex; align-items: center; border: 2px solid var(--gray-mid); border-radius: 12px; overflow: hidden; }
+    .qty-btn { width: 42px; height: 48px; border: none; background: var(--gray-light); color: var(--black); font-size: 1.2rem; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .qty-btn:hover { background: var(--rose-gold); color: white; }
+    .qty-input { width: 55px; height: 48px; border: none; text-align: center; font-family: 'Vazirmatn', sans-serif; font-size: 1.1rem; font-weight: 700; background: white; outline: none; }
+    .btn-add-to-cart { flex: 1; min-width: 180px; background: var(--black); color: white; border: none; padding: 0.9rem 2rem; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: 'Vazirmatn', sans-serif; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    .btn-add-to-cart:hover { background: var(--rose-gold); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(201,169,110,0.4); }
+    .btn-buy-now { background: var(--rose-gold); color: white; border: none; padding: 0.9rem 2rem; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: 'Vazirmatn', sans-serif; }
+    .btn-buy-now:hover { background: var(--rose-gold-dark); }
+
+    /* Features */
+    .product-features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem; }
+    .feature-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #555; }
+    .feature-item i { color: var(--rose-gold); width: 16px; }
+
+    /* Tabs */
+    .product-tabs { margin-top: 3rem; }
+    .nav-tabs { border-bottom: 2px solid var(--gray-mid); }
+    .nav-tabs .nav-link { color: var(--text-muted); font-weight: 600; font-family: 'Vazirmatn', sans-serif; border: none; padding: 0.8rem 1.5rem; font-size: 0.95rem; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+    .nav-tabs .nav-link.active { color: var(--rose-gold); border-bottom-color: var(--rose-gold); background: none; }
+    .nav-tabs .nav-link:hover { color: var(--rose-gold); background: var(--pink-light); border-radius: 8px 8px 0 0; }
+    .tab-content { padding: 2rem 0; }
+    .tab-content p { color: #555; line-height: 2; font-size: 0.95rem; }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table tr:nth-child(even) { background: var(--gray-light); }
+    .spec-table td { padding: 0.8rem 1.2rem; font-size: 0.9rem; border-bottom: 1px solid var(--gray-mid); }
+    .spec-table td:first-child { font-weight: 700; color: var(--black); width: 35%; }
+    .spec-table td:last-child { color: #555; }
+
+    /* Reviews */
+    .review-summary { background: var(--gray-light); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+    .big-score { font-size: 4rem; font-weight: 800; color: var(--rose-gold); line-height: 1; }
+    .score-stars { color: #f39c12; font-size: 1.2rem; margin: 0.3rem 0; }
+    .score-count { color: var(--text-muted); font-size: 0.9rem; }
+    .rating-bar { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
+    .rating-bar-label { font-size: 0.8rem; color: var(--text-muted); width: 30px; text-align: center; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 8px; background: var(--gray-mid); border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; background: #f39c12; border-radius: 4px; }
+    .rating-bar-count { font-size: 0.8rem; color: var(--text-muted); width: 30px; text-align: left; flex-shrink: 0; }
+    .review-card { border: 1px solid var(--gray-mid); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.2rem; }
+    .reviewer-name { font-weight: 700; color: var(--black); font-size: 0.95rem; }
+    .review-date { font-size: 0.78rem; color: var(--text-muted); }
+    .review-stars { color: #f39c12; font-size: 0.85rem; margin: 0.3rem 0; }
+    .review-text { font-size: 0.9rem; color: #555; line-height: 1.8; margin: 0.5rem 0 0; }
+    .review-helpful { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.8rem; }
+    .review-helpful button { background: none; border: 1px solid var(--gray-mid); border-radius: 20px; padding: 0.2rem 0.7rem; font-size: 0.78rem; cursor: pointer; font-family: 'Vazirmatn', sans-serif; margin-right: 0.3rem; transition: all 0.2s; }
+    .review-helpful button:hover { border-color: var(--rose-gold); color: var(--rose-gold); }
+    .verified-badge { background: #e8f8f5; color: #27ae60; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 8px; margin-right: 0.5rem; }
+
+    /* Related Products */
+    .related-section { padding: 3rem 0; }
+    .related-section .section-title { margin-bottom: 2rem; }
+    .related-section .section-title h3 { font-size: 1.4rem; font-weight: 800; }
+    .rel-product-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 3px 15px rgba(0,0,0,0.06); transition: all 0.3s; }
+    .rel-product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+    .rel-product-card img { width: 100%; height: 180px; object-fit: cover; }
+    .rel-product-body { padding: 1rem; }
+    .rel-product-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .rel-price { font-size: 0.95rem; font-weight: 800; color: var(--rose-gold); }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="home.html">لوکس<span>بیوتی</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="home.html">صفحه اصلی</a></li>
+        <li class="nav-item"><a class="nav-link" href="products.html">محصولات</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">تخفیف‌ها</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        <a href="#" class="nav-icon"><i class="far fa-heart"></i></a>
+        <a href="cart.html" class="nav-icon" style="position:relative;">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="cart-badge">۳</span>
+        </a>
+        <a href="#" class="nav-icon"><i class="far fa-user"></i></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Breadcrumb -->
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="home.html">صفحه اصلی</a></li>
+        <li class="breadcrumb-item"><a href="products.html">محصولات</a></li>
+        <li class="breadcrumb-item"><a href="products.html">مراقبت پوست</a></li>
+        <li class="breadcrumb-item active">کرم مرطوب‌کننده روزانه SPF30</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- Product Detail -->
+<div class="container py-4">
+  <div class="product-detail-card">
+    <div class="row g-5">
+      <!-- Gallery -->
+      <div class="col-lg-5">
+        <div class="gallery-main">
+          <img src="https://picsum.photos/550/450?random=100" alt="کرم مرطوب‌کننده" id="mainImg">
+          <div class="gallery-badge">
+            <span class="badge bg-danger fw-bold">۲۵٪ تخفیف</span>
+          </div>
+          <button class="wishlist-btn" id="wishlistBtn" onclick="toggleWishlist()">
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="thumb-item active" onclick="changeImg('https://picsum.photos/550/450?random=100', this)">
+            <img src="https://picsum.photos/75/75?random=100" alt="thumbnail 1">
+          </div>
+          <div class="thumb-item" onclick="changeImg('https://picsum.photos/550/450?random=101', this)">
+            <img src="https://picsum.photos/75/75?random=101" alt="thumbnail 2">
+          </div>
+          <div class="thumb-item" onclick="changeImg('https://picsum.photos/550/450?random=102', this)">
+            <img src="https://picsum.photos/75/75?random=102" alt="thumbnail 3">
+          </div>
+          <div class="thumb-item" onclick="changeImg('https://picsum.photos/550/450?random=103', this)">
+            <img src="https://picsum.photos/75/75?random=103" alt="thumbnail 4">
+          </div>
+          <div class="thumb-item" onclick="changeImg('https://picsum.photos/550/450?random=104', this)">
+            <img src="https://picsum.photos/75/75?random=104" alt="thumbnail 5">
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="col-lg-7">
+        <span class="product-brand-tag"><i class="fas fa-certificate me-1"></i> لورآل پاریس</span>
+        <h1 class="product-title">کرم مرطوب‌کننده روزانه Hydra Genius SPF30</h1>
+
+        <div class="product-rating">
+          <div class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          </div>
+          <span class="rating-text">۴.۵ از ۵ | <a href="#reviews">۱۲۸ نظر</a></span>
+          <span class="rating-text">| ۳۴۶ بار فروخته شد</span>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Price -->
+        <div class="price-section">
+          <div>
+            <div class="price-current">۱۸۵,۰۰۰ تومان</div>
+            <div class="price-original">۲۴۵,۰۰۰ تومان</div>
+          </div>
+          <span class="discount-badge">۲۵٪ تخفیف</span>
+        </div>
+
+        <!-- Stock -->
+        <div class="stock-indicator">
+          <span class="stock-dot"></span>
+          <span style="color:#27ae60;">موجود در انبار</span>
+          <span class="stock-count">(۲۳ عدد باقی‌مانده)</span>
+        </div>
+
+        <!-- Size variant -->
+        <div class="variant-section">
+          <div class="variant-label">حجم: <span>۵۰ml</span></div>
+          <div class="size-options">
+            <button class="size-opt">۲۵ml</button>
+            <button class="size-opt active">۵۰ml</button>
+            <button class="size-opt">۱۰۰ml</button>
+            <button class="size-opt">۲۰۰ml</button>
+          </div>
+        </div>
+
+        <!-- Skin Type -->
+        <div class="variant-section">
+          <div class="variant-label">نوع پوست: <span>نرمال</span></div>
+          <div class="size-options">
+            <button class="size-opt active">نرمال</button>
+            <button class="size-opt">خشک</button>
+            <button class="size-opt">مختلط</button>
+            <button class="size-opt">چرب</button>
+          </div>
+        </div>
+
+        <!-- Quantity & Cart -->
+        <div class="quantity-cart">
+          <div class="quantity-control">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input type="number" class="qty-input" value="1" min="1" max="99" id="qtyInput" readonly>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <button class="btn-add-to-cart" onclick="addToCart()">
+            <i class="fas fa-shopping-bag"></i> افزودن به سبد خرید
+          </button>
+          <button class="btn-buy-now">خرید فوری</button>
+        </div>
+
+        <!-- Features -->
+        <div class="product-features">
+          <div class="feature-item"><i class="fas fa-check-circle"></i> اورجینال و اصلی</div>
+          <div class="feature-item"><i class="fas fa-truck"></i> ارسال سریع ۲۴ ساعته</div>
+          <div class="feature-item"><i class="fas fa-shield-alt"></i> ضمانت بازگشت ۷ روزه</div>
+          <div class="feature-item"><i class="fas fa-leaf"></i> تست درماتولوژی شده</div>
+          <div class="feature-item"><i class="fas fa-sun"></i> محافظت در برابر UV</div>
+          <div class="feature-item"><i class="fas fa-flask"></i> فاقد پارابن</div>
+        </div>
+
+        <!-- Share -->
+        <div class="d-flex align-items-center gap-2 mt-2">
+          <span style="font-size:0.85rem;color:var(--text-muted);">اشتراک‌گذاری:</span>
+          <a href="#" style="color:#3b5998;font-size:1.1rem;"><i class="fab fa-facebook"></i></a>
+          <a href="#" style="color:#e1306c;font-size:1.1rem;"><i class="fab fa-instagram"></i></a>
+          <a href="#" style="color:#0088cc;font-size:1.1rem;"><i class="fab fa-telegram"></i></a>
+          <a href="#" style="color:#25d366;font-size:1.1rem;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="product-tabs" id="tabs">
+    <div style="background:white;border-radius:20px;padding:2rem;box-shadow:0 3px 20px rgba(0,0,0,0.05);">
+      <ul class="nav nav-tabs" id="productTabs">
+        <li class="nav-item">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#description">توضیحات محصول</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#specs">مشخصات فنی</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reviews" id="reviewsTab">
+            نظرات کاربران <span class="badge bg-secondary ms-1" style="font-size:0.7rem;">۱۲۸</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping">ارسال و بازگشت</button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- Description -->
+        <div class="tab-pane fade show active" id="description">
+          <h5 style="font-weight:800;margin-bottom:1rem;">کرم مرطوب‌کننده روزانه Hydra Genius SPF30</h5>
+          <p>کرم مرطوب‌کننده روزانه لورآل پاریس با فرمول پیشرفته Hydra Genius، پوست شما را تا ۲۴ ساعت مرطوب نگه می‌دارد. این کرم با استفاده از هیالورونیک اسید طبیعی و آلوئه‌ورا، رطوبت لازم را به عمق لایه‌های پوست می‌رساند.</p>
+          <p>فاکتور ضد آفتاب SPF30 این کرم محافظت کاملی در برابر اشعه‌های مضر UVA و UVB فراهم می‌کند. این محصول برای پوست‌های نرمال تا مختلط فرموله شده و تست درماتولوژی را گذرانده است.</p>
+          <h6 style="font-weight:700;margin-top:1.2rem;">مزایای اصلی:</h6>
+          <ul style="color:#555;line-height:2.2;font-size:0.95rem;">
+            <li>آبرسانی ۲۴ ساعته با فناوری Hydra Genius</li>
+            <li>محافظت SPF30 در برابر آفتاب</li>
+            <li>حاوی هیالورونیک اسید طبیعی</li>
+            <li>سبک و غیر چرب — مناسب برای استفاده روزانه</li>
+            <li>تست شده توسط متخصصان پوست (درماتست)</li>
+            <li>فاقد پارابن، رنگ مصنوعی و مواد مضر</li>
+          </ul>
+          <h6 style="font-weight:700;margin-top:1.2rem;">روش استفاده:</h6>
+          <p>هر صبح پس از پاکسازی پوست، مقدار کافی از کرم را روی صورت و گردن بمالید. با حرکات دایره‌ای ملایم ماساژ دهید تا کاملاً جذب شود. برای بهترین نتیجه قبل از آرایش استفاده کنید.</p>
+        </div>
+
+        <!-- Specs -->
+        <div class="tab-pane fade" id="specs">
+          <h5 style="font-weight:800;margin-bottom:1.5rem;">مشخصات فنی محصول</h5>
+          <table class="spec-table">
+            <tr><td>برند</td><td>لورآل پاریس (L'Oréal Paris)</td></tr>
+            <tr><td>سری محصول</td><td>Hydra Genius</td></tr>
+            <tr><td>حجم</td><td>۵۰ میلی‌لیتر</td></tr>
+            <tr><td>نوع پوست مناسب</td><td>نرمال، مختلط</td></tr>
+            <tr><td>فاکتور SPF</td><td>SPF30</td></tr>
+            <tr><td>کشور سازنده</td><td>فرانسه</td></tr>
+            <tr><td>تاریخ انقضا</td><td>۳ سال (۳۶ ماه)</td></tr>
+            <tr><td>آزمایش درماتولوژی</td><td>تست شده و تأیید شده</td></tr>
+            <tr><td>پارابن</td><td>فاقد پارابن</td></tr>
+            <tr><td>عطر مصنوعی</td><td>ندارد</td></tr>
+            <tr><td>مواد اصلی</td><td>هیالورونیک اسید، آلوئه‌ورا، ویتامین E</td></tr>
+            <tr><td>رنگ</td><td>سفید کرمی</td></tr>
+            <tr><td>کد محصول</td><td>LOR-HG-SPF30-50</td></tr>
+          </table>
+        </div>
+
+        <!-- Reviews -->
+        <div class="tab-pane fade" id="reviews">
+          <!-- Review Summary -->
+          <div class="review-summary">
+            <div class="row align-items-center">
+              <div class="col-md-3 text-center">
+                <div class="big-score">۴.۵</div>
+                <div class="score-stars">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                <div class="score-count">از ۱۲۸ نظر</div>
+              </div>
+              <div class="col-md-9">
+                <div class="rating-bar">
+                  <span class="rating-bar-label">۵ ⭐</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:72%"></div></div>
+                  <span class="rating-bar-count">۹۲</span>
+                </div>
+                <div class="rating-bar">
+                  <span class="rating-bar-label">۴ ⭐</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:18%;background:#f0c060;"></div></div>
+                  <span class="rating-bar-count">۲۳</span>
+                </div>
+                <div class="rating-bar">
+                  <span class="rating-bar-label">۳ ⭐</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:7%;background:#e0a040;"></div></div>
+                  <span class="rating-bar-count">۹</span>
+                </div>
+                <div class="rating-bar">
+                  <span class="rating-bar-label">۲ ⭐</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:2%;background:#cc8030;"></div></div>
+                  <span class="rating-bar-count">۳</span>
+                </div>
+                <div class="rating-bar">
+                  <span class="rating-bar-label">۱ ⭐</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:1%;background:#b86020;"></div></div>
+                  <span class="rating-bar-count">۱</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review List -->
+          <div class="review-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <span class="reviewer-name">سارا محمدی</span>
+                <span class="verified-badge">خریدار تأییدشده</span>
+              </div>
+              <span class="review-date">۱۵ اردیبهشت ۱۴۰۳</span>
+            </div>
+            <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            <p class="review-text">فوق‌العاده! این کرم پوستم رو واقعاً تغییر داد. بعد از ۲ هفته استفاده، پوستم خیلی نرم‌تر و درخشان‌تر شده. بوش هم خیلی خوبه و جذب‌شدنش سریعه. حتماً خریدش رو توصیه می‌کنم.</p>
+            <div class="review-helpful">آیا این نظر مفید بود؟ <button>بله (۱۴)</button><button>خیر (۲)</button></div>
+          </div>
+
+          <div class="review-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <span class="reviewer-name">مریم احمدی</span>
+                <span class="verified-badge">خریدار تأییدشده</span>
+              </div>
+              <span class="review-date">۸ اردیبهشت ۱۴۰۳</span>
+            </div>
+            <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+            <p class="review-text">کیفیت خوبیه ولی دوست داشتم حجمش بیشتر باشه. برای پوست مختلطم خیلی مناسبه و چرب نمی‌کنه. SPF30 هم اضافه داره که برای روزمره عالیه.</p>
+            <div class="review-helpful">آیا این نظر مفید بود؟ <button>بله (۸)</button><button>خیر (۱)</button></div>
+          </div>
+
+          <div class="review-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <span class="reviewer-name">فاطمه رضایی</span>
+              </div>
+              <span class="review-date">۲ اردیبهشت ۱۴۰۳</span>
+            </div>
+            <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            <p class="review-text">یکی از بهترین کرم‌هایی که استفاده کردم. پوستم خشک بود و این کرم واقعاً کمک کرد. ارسالش هم سریع بود.</p>
+            <div class="review-helpful">آیا این نظر مفید بود؟ <button>بله (۶)</button><button>خیر (۰)</button></div>
+          </div>
+
+          <div class="text-center mt-3">
+            <button style="background:none;border:2px solid var(--rose-gold);color:var(--rose-gold);padding:0.6rem 2rem;border-radius:25px;font-family:'Vazirmatn',sans-serif;font-weight:700;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='var(--rose-gold)';this.style.color='white';" onmouseout="this.style.background='none';this.style.color='var(--rose-gold)';">
+              نمایش همه نظرات (۱۲۵ نظر دیگر)
+            </button>
+          </div>
+        </div>
+
+        <!-- Shipping -->
+        <div class="tab-pane fade" id="shipping">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <h6 style="font-weight:800;color:var(--rose-gold);margin-bottom:1rem;"><i class="fas fa-truck me-2"></i>شرایط ارسال</h6>
+              <ul style="color:#555;line-height:2.2;font-size:0.92rem;">
+                <li>ارسال به سراسر ایران</li>
+                <li>ارسال رایگان برای خرید بالای ۵۰۰,۰۰۰ تومان</li>
+                <li>هزینه ارسال برای کمتر از ۵۰۰,۰۰۰ تومان: ۳۰,۰۰۰ تومان</li>
+                <li>زمان تحویل: ۱ تا ۳ روز کاری</li>
+                <li>ارسال پیشتاز برای تهران: همان روز</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h6 style="font-weight:800;color:var(--rose-gold);margin-bottom:1rem;"><i class="fas fa-undo me-2"></i>شرایط بازگشت</h6>
+              <ul style="color:#555;line-height:2.2;font-size:0.92rem;">
+                <li>ضمانت بازگشت تا ۷ روز پس از دریافت</li>
+                <li>محصول باید کاملاً سالم و بسته‌بندی دست‌نخورده باشد</li>
+                <li>درصورت معیوب بودن، جایگزینی رایگان</li>
+                <li>تمام محصولات اصالت تضمینی دارند</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="related-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 style="font-size:1.4rem;font-weight:800;">محصولات مشابه</h3>
+      <a href="products.html" style="color:var(--rose-gold);text-decoration:none;font-size:0.9rem;font-weight:600;">مشاهده بیشتر ›</a>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div class="rel-product-card">
+          <img src="https://picsum.photos/300/180?random=200" alt="سرم">
+          <div class="rel-product-body">
+            <div class="product-brand" style="font-size:0.75rem;color:var(--text-muted);">لورآل پاریس</div>
+            <div class="rel-product-name">سرم آبرسان Revitalift Filler</div>
+            <div style="color:#f39c12;font-size:0.78rem;margin-bottom:0.3rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+            <div class="rel-price">۲۸۵,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="rel-product-card">
+          <img src="https://picsum.photos/300/180?random=201" alt="توتال ریپیر">
+          <div class="rel-product-body">
+            <div class="product-brand" style="font-size:0.75rem;color:var(--text-muted);">نیوآ</div>
+            <div class="rel-product-name">کرم شب مرطوب‌کننده Q10</div>
+            <div style="color:#f39c12;font-size:0.78rem;margin-bottom:0.3rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+            <div class="rel-price">۱۴۵,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="rel-product-card">
+          <img src="https://picsum.photos/300/180?random=202" alt="ماسک">
+          <div class="rel-product-body">
+            <div class="product-brand" style="font-size:0.75rem;color:var(--text-muted);">مایبلین</div>
+            <div class="rel-product-name">کرم BB پوشش کامل SPF20</div>
+            <div style="color:#f39c12;font-size:0.78rem;margin-bottom:0.3rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i></div>
+            <div class="rel-price">۱۱۸,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="rel-product-card">
+          <img src="https://picsum.photos/300/180?random=203" alt="آبرسان">
+          <div class="rel-product-body">
+            <div class="product-brand" style="font-size:0.75rem;color:var(--text-muted);">لورآل پاریس</div>
+            <div class="rel-product-name">میست آبرسان Pure Moisture</div>
+            <div style="color:#f39c12;font-size:0.78rem;margin-bottom:0.3rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            <div class="rel-price">۹۵,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer (compact) -->
+<footer style="background:var(--black);color:rgba(255,255,255,0.6);padding:2rem 0;margin-top:1rem;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <div style="font-size:1.4rem;font-weight:800;color:var(--rose-gold);">لوکس<span style="color:white;">بیوتی</span></div>
+      </div>
+      <div class="col-md-4 text-center py-2">
+        <small>© ۱۴۰۳ لوکس‌بیوتی — تمام حقوق محفوظ است</small>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a href="products.html" style="color:var(--rose-gold);text-decoration:none;font-size:0.9rem;">بازگشت به محصولات ‹</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function changeImg(src, el) {
+    document.getElementById('mainImg').src = src;
+    document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function changeQty(delta) {
+    const input = document.getElementById('qtyInput');
+    let val = parseInt(input.value) + delta;
+    if (val < 1) val = 1;
+    if (val > 99) val = 99;
+    input.value = val;
+  }
+
+  function toggleWishlist() {
+    const btn = document.getElementById('wishlistBtn');
+    btn.classList.toggle('active');
+    const icon = btn.querySelector('i');
+    icon.className = btn.classList.contains('active') ? 'fas fa-heart' : 'far fa-heart';
+  }
+
+  function addToCart() {
+    const btn = document.querySelector('.btn-add-to-cart');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> افزوده شد!';
+    btn.style.background = '#27ae60';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2000);
+  }
+
+  // Size options toggle
+  document.querySelectorAll('.size-options').forEach(group => {
+    group.querySelectorAll('.size-opt').forEach(opt => {
+      opt.addEventListener('click', function() {
+        group.querySelectorAll('.size-opt').forEach(o => o.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  });
+</script>
+</body>
+</html>
