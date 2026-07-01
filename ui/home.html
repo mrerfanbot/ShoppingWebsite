@@ -11,223 +11,392 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
-      --rose-gold: #C9A96E;
-      --rose-gold-dark: #b8935a;
-      --white: #FAFAFA;
-      --black: #1A1A1A;
-      --pink-light: #F8E8EE;
-      --gray-light: #f5f5f5;
-      --gray-mid: #e0e0e0;
-      --text-muted: #888;
+      --bg-main: #FAF7F0;
+      --color-primary: #4A7C59;
+      --color-accent: #D4AF37;
+      --color-text: #2B2B2B;
+      --bg-card: #FFFFFF;
+      --border-color: #E8E5DD;
     }
-    * { font-family: 'Vazirmatn', sans-serif; }
-    body { background: var(--white); color: var(--black); }
+    * { font-family: 'Vazirmatn', sans-serif; box-sizing: border-box; }
+    body { background: var(--bg-main); color: var(--color-text); }
+    a { text-decoration: none; color: inherit; }
 
-    /* Navbar */
-    .navbar { background: var(--black) !important; padding: 1rem 0; box-shadow: 0 2px 20px rgba(201,169,110,0.2); }
-    .navbar-brand { font-size: 1.6rem; font-weight: 800; color: var(--rose-gold) !important; letter-spacing: 1px; }
-    .navbar-brand span { color: var(--white); }
-    .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 500; transition: color 0.3s; padding: 0.5rem 1rem !important; }
-    .nav-link:hover, .nav-link.active { color: var(--rose-gold) !important; }
-    .navbar-toggler { border-color: var(--rose-gold); }
-    .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28201,169,110,1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
-    .nav-icon { color: var(--rose-gold) !important; font-size: 1.2rem; position: relative; }
-    .cart-badge { position: absolute; top: -8px; right: -8px; background: var(--rose-gold); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-    .search-box { background: rgba(255,255,255,0.1); border: 1px solid rgba(201,169,110,0.4); border-radius: 25px; padding: 0.4rem 1rem; color: white; display: flex; align-items: center; gap: 0.5rem; }
-    .search-box input { background: transparent; border: none; outline: none; color: white; font-family: 'Vazirmatn', sans-serif; width: 200px; }
-    .search-box input::placeholder { color: rgba(255,255,255,0.5); }
-    .search-box i { color: var(--rose-gold); }
+    /* ========== HEADER ========== */
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.75rem 0;
+    }
+    .header-inner { display: flex; align-items: center; gap: 1rem; }
+    .brand-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      white-space: nowrap;
+    }
+    .brand-logo span { color: var(--color-accent); }
+    .main-nav { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+    .main-nav a {
+      display: block;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-text);
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .main-nav a:hover, .main-nav a.active { color: var(--color-primary); background: rgba(74,124,89,0.08); }
+    .header-actions { display: flex; align-items: center; gap: 0.5rem; margin-right: auto; }
+    .header-actions .btn-icon {
+      width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-color);
+      background: #fff; color: var(--color-text); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s; font-size: 0.95rem; position: relative;
+    }
+    .header-actions .btn-icon:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .cart-badge {
+      position: absolute; top: -5px; left: -5px;
+      background: var(--color-accent); color: #fff;
+      font-size: 0.65rem; font-weight: 700;
+      width: 17px; height: 17px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-login {
+      padding: 0.4rem 1rem; background: var(--color-primary); color: #fff;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600; border: none;
+      cursor: pointer; transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-login:hover { background: #3a6347; }
+    .navbar-toggler-custom {
+      display: none; background: none; border: 1px solid var(--border-color);
+      border-radius: 6px; padding: 0.3rem 0.5rem; cursor: pointer; color: var(--color-text);
+    }
+    @media (max-width: 991px) {
+      .main-nav { display: none; }
+      .navbar-toggler-custom { display: block; }
+    }
 
-    /* Hero Slider */
-    .hero-section { position: relative; overflow: hidden; }
-    .carousel-item { height: 580px; }
-    .hero-slide { height: 100%; display: flex; align-items: center; }
-    .slide-1 { background: linear-gradient(135deg, #1A1A1A 0%, #2d1f2e 50%, #3d2535 100%); }
-    .slide-2 { background: linear-gradient(135deg, #2a1a0e 0%, #3d2510 50%, #4a2d15 100%); }
-    .slide-3 { background: linear-gradient(135deg, #0d1a2d 0%, #1a2d3d 50%, #1f3545 100%); }
-    .hero-content { z-index: 2; padding: 2rem; }
-    .hero-badge { background: var(--rose-gold); color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
-    .hero-title { font-size: 3rem; font-weight: 800; color: white; line-height: 1.3; margin-bottom: 1rem; }
-    .hero-title span { color: var(--rose-gold); }
-    .hero-subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.75); margin-bottom: 2rem; line-height: 1.8; }
-    .btn-hero { background: var(--rose-gold); color: white; border: none; padding: 0.8rem 2.5rem; border-radius: 30px; font-size: 1rem; font-weight: 600; transition: all 0.3s; box-shadow: 0 5px 20px rgba(201,169,110,0.4); font-family: 'Vazirmatn', sans-serif; }
-    .btn-hero:hover { background: var(--rose-gold-dark); color: white; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201,169,110,0.5); }
-    .btn-hero-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4); padding: 0.8rem 2rem; border-radius: 30px; font-size: 1rem; font-weight: 600; transition: all 0.3s; font-family: 'Vazirmatn', sans-serif; margin-right: 1rem; }
-    .btn-hero-outline:hover { border-color: var(--rose-gold); color: var(--rose-gold); }
-    .hero-image-container { position: relative; display: flex; justify-content: center; align-items: center; }
-    .hero-img { max-height: 450px; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5)); animation: floatUp 3s ease-in-out infinite; }
-    .hero-circle { position: absolute; width: 380px; height: 380px; background: radial-gradient(circle, rgba(201,169,110,0.15) 0%, transparent 70%); border-radius: 50%; }
-    @keyframes floatUp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-    .carousel-indicators [data-bs-target] { width: 10px; height: 10px; border-radius: 50%; background-color: rgba(201,169,110,0.5); border: none; }
-    .carousel-indicators .active { background-color: var(--rose-gold); }
-    .carousel-control-prev, .carousel-control-next { width: 50px; height: 50px; background: rgba(201,169,110,0.2); border-radius: 50%; top: 50%; transform: translateY(-50%); margin: 0 1rem; }
+    /* ========== HERO SLIDER ========== */
+    .hero-section { position: relative; }
+    #heroCarousel .carousel-item { min-height: 500px; position: relative; overflow: hidden; }
+    #heroCarousel .carousel-item img { width: 100%; height: 500px; object-fit: cover; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to left, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.2) 100%);
+      display: flex; align-items: center;
+    }
+    .hero-text { color: #fff; max-width: 520px; }
+    .hero-text .tag {
+      display: inline-block; background: var(--color-accent); color: #fff;
+      font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.8rem;
+      border-radius: 20px; margin-bottom: 1rem;
+    }
+    .hero-text h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.4; }
+    .hero-text p { font-size: 1rem; opacity: 0.9; margin-bottom: 1.5rem; }
+    .btn-primary-green {
+      background: var(--color-primary); color: #fff; border: none;
+      padding: 0.65rem 1.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; display: inline-block;
+    }
+    .btn-primary-green:hover { background: #3a6347; color: #fff; }
+    .carousel-control-prev, .carousel-control-next { width: 44px; }
+    .carousel-indicators [data-bs-target] { background-color: var(--color-primary); }
+    @media (max-width: 767px) {
+      #heroCarousel .carousel-item img { height: 280px; }
+      #heroCarousel .carousel-item { min-height: 280px; }
+      .hero-text h1 { font-size: 1.4rem; }
+    }
 
-    /* Stats Bar */
-    .stats-bar { background: var(--rose-gold); padding: 1.2rem 0; }
-    .stat-item { display: flex; align-items: center; gap: 0.8rem; color: white; }
-    .stat-item i { font-size: 1.5rem; opacity: 0.9; }
-    .stat-item .stat-text { line-height: 1.3; }
-    .stat-item .stat-title { font-weight: 700; font-size: 0.95rem; }
-    .stat-item .stat-desc { font-size: 0.8rem; opacity: 0.85; }
+    /* ========== CATEGORY BAR ========== */
+    .category-bar-section { background: #fff; border-bottom: 1px solid var(--border-color); padding: 1rem 0; }
+    .category-scroll { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.25rem; scrollbar-width: none; }
+    .category-scroll::-webkit-scrollbar { display: none; }
+    .cat-item {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      min-width: 72px; cursor: pointer;
+    }
+    .cat-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--bg-main); border: 1.5px solid var(--border-color);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; transition: background 0.2s, border-color 0.2s;
+    }
+    .cat-item:hover .cat-icon { background: rgba(74,124,89,0.1); border-color: var(--color-primary); }
+    .cat-name { font-size: 0.72rem; font-weight: 600; color: var(--color-text); text-align: center; white-space: nowrap; }
 
-    /* Section Titles */
-    .section-title { text-align: center; margin-bottom: 3rem; }
-    .section-title .subtitle { color: var(--rose-gold); font-weight: 600; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
-    .section-title h2 { font-size: 2rem; font-weight: 800; color: var(--black); margin-bottom: 0.5rem; }
-    .section-title p { color: var(--text-muted); font-size: 1rem; }
-    .title-line { width: 60px; height: 3px; background: linear-gradient(to right, var(--rose-gold), transparent); margin: 0.8rem auto 0; border-radius: 2px; }
+    /* ========== SECTION TITLES ========== */
+    .section-title { margin-bottom: 2rem; }
+    .section-title .label {
+      font-size: 0.78rem; font-weight: 700; color: var(--color-primary);
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.4rem; display: block;
+    }
+    .section-title h2 { font-size: 1.6rem; font-weight: 800; margin: 0 0 0.4rem; }
+    .section-title p { font-size: 0.9rem; color: #666; margin: 0; }
 
-    /* Categories */
-    .categories-section { padding: 5rem 0; background: var(--white); }
-    .category-card { background: white; border-radius: 20px; padding: 2rem 1.5rem; text-align: center; box-shadow: 0 5px 30px rgba(0,0,0,0.06); transition: all 0.3s; cursor: pointer; border: 2px solid transparent; position: relative; overflow: hidden; }
-    .category-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(to right, var(--rose-gold), var(--pink-light)); opacity: 0; transition: opacity 0.3s; }
-    .category-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(201,169,110,0.2); border-color: var(--rose-gold); }
-    .category-card:hover::before { opacity: 1; }
-    .category-icon { width: 90px; height: 90px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-size: 2rem; }
-    .cat-1 .category-icon { background: linear-gradient(135deg, #fde8f0, #f8c8d8); color: #c56088; }
-    .cat-2 .category-icon { background: linear-gradient(135deg, #fef5e0, #fde0a0); color: #b8860b; }
-    .cat-3 .category-icon { background: linear-gradient(135deg, #e8f4fd, #c0def7); color: #2980b9; }
-    .cat-4 .category-icon { background: linear-gradient(135deg, #e8fde8, #b8f0b8); color: #27ae60; }
-    .cat-5 .category-icon { background: linear-gradient(135deg, #f0e8fd, #d4b8f0); color: #8e44ad; }
-    .cat-6 .category-icon { background: linear-gradient(135deg, #fde8e8, #f0b8b8); color: #c0392b; }
-    .category-card h5 { font-weight: 700; color: var(--black); margin-bottom: 0.3rem; font-size: 1rem; }
-    .category-card p { color: var(--text-muted); font-size: 0.82rem; margin: 0; }
-    .category-count { display: inline-block; background: var(--pink-light); color: var(--rose-gold); font-size: 0.75rem; font-weight: 600; padding: 0.15rem 0.6rem; border-radius: 10px; margin-top: 0.5rem; }
+    /* ========== SALE SECTION ========== */
+    .sale-section { background: linear-gradient(135deg, #4A7C59 0%, #2D5A3D 100%); padding: 3rem 0; }
+    .sale-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .sale-title { color: #fff; }
+    .sale-title .label { color: rgba(255,255,255,0.7); }
+    .sale-title h2 { color: #fff; }
+    .countdown { display: flex; gap: 0.5rem; align-items: center; }
+    .countdown-unit {
+      background: rgba(255,255,255,0.15); border-radius: 8px;
+      padding: 0.4rem 0.75rem; text-align: center; min-width: 52px;
+    }
+    .countdown-num { display: block; font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1; }
+    .countdown-label { font-size: 0.65rem; color: rgba(255,255,255,0.7); margin-top: 2px; display: block; }
+    .countdown-sep { color: #fff; font-size: 1.2rem; font-weight: 800; }
 
-    /* Products Section */
-    .products-section { padding: 5rem 0; background: var(--gray-light); }
-    .product-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 3px 20px rgba(0,0,0,0.06); transition: all 0.3s; border: none; }
-    .product-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
-    .product-img-wrapper { position: relative; overflow: hidden; background: var(--pink-light); }
-    .product-img-wrapper img { width: 100%; height: 220px; object-fit: cover; transition: transform 0.4s; }
-    .product-card:hover .product-img-wrapper img { transform: scale(1.05); }
-    .product-badge { position: absolute; top: 12px; right: 12px; }
-    .badge-discount { background: #e74c3c; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.6rem; border-radius: 8px; }
-    .badge-new { background: var(--rose-gold); color: white; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.6rem; border-radius: 8px; }
-    .badge-best { background: #f39c12; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.6rem; border-radius: 8px; }
-    .product-actions { position: absolute; bottom: -50px; left: 0; right: 0; display: flex; justify-content: center; gap: 0.5rem; transition: all 0.3s; padding: 0.5rem; }
-    .product-card:hover .product-actions { bottom: 10px; }
-    .btn-action { width: 38px; height: 38px; border-radius: 50%; border: none; background: white; color: var(--black); box-shadow: 0 3px 10px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
-    .btn-action:hover { background: var(--rose-gold); color: white; }
-    .product-body { padding: 1.2rem; }
-    .product-brand { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.3rem; }
-    .product-name { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 0.5rem; line-height: 1.4; }
-    .product-stars { color: #f39c12; font-size: 0.8rem; margin-bottom: 0.6rem; }
-    .product-stars span { color: var(--text-muted); font-size: 0.75rem; margin-right: 0.3rem; }
-    .product-price { display: flex; align-items: center; justify-content: space-between; }
-    .price-new { font-size: 1rem; font-weight: 800; color: var(--rose-gold); }
-    .price-old { font-size: 0.82rem; color: var(--text-muted); text-decoration: line-through; }
-    .btn-add-cart { background: var(--black); color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Vazirmatn', sans-serif; }
-    .btn-add-cart:hover { background: var(--rose-gold); }
+    .sale-scroll { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.3) transparent; }
+    .sale-scroll::-webkit-scrollbar { height: 4px; }
+    .sale-scroll::-webkit-scrollbar-track { background: transparent; }
+    .sale-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; }
 
-    /* Filter Tabs */
-    .filter-tabs { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
-    .filter-tab { padding: 0.5rem 1.5rem; border-radius: 25px; border: 2px solid var(--gray-mid); background: white; color: var(--text-muted); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Vazirmatn', sans-serif; }
-    .filter-tab.active, .filter-tab:hover { background: var(--rose-gold); border-color: var(--rose-gold); color: white; }
+    .sale-card {
+      background: var(--bg-card); border-radius: 12px; overflow: hidden;
+      min-width: 200px; flex-shrink: 0; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sale-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+    .sale-card img { width: 100%; height: 180px; object-fit: cover; }
+    .sale-card-body { padding: 0.85rem; }
+    .sale-card-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--color-text); }
+    .price-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .price-old { font-size: 0.78rem; color: #999; text-decoration: line-through; }
+    .price-new { font-size: 0.95rem; font-weight: 800; color: var(--color-primary); }
+    .badge-discount {
+      background: var(--color-accent); color: #fff;
+      font-size: 0.65rem; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px;
+    }
 
-    /* Mid Banner */
-    .mid-banner { padding: 4rem 0; background: var(--black); position: relative; overflow: hidden; }
-    .mid-banner::before { content: ''; position: absolute; top: -50%; right: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,169,110,0.1) 0%, transparent 60%); border-radius: 50%; }
-    .banner-card { background: linear-gradient(135deg, #1f1f1f 0%, #2d2d2d 100%); border: 1px solid rgba(201,169,110,0.2); border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; height: 100%; }
-    .banner-card::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(201,169,110,0.1), transparent); border-radius: 50%; }
-    .banner-tag { background: var(--rose-gold); color: white; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.8rem; border-radius: 15px; display: inline-block; margin-bottom: 1rem; }
-    .banner-title { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 0.8rem; line-height: 1.4; }
-    .banner-desc { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.7; }
-    .banner-price-tag { font-size: 1.8rem; font-weight: 800; color: var(--rose-gold); margin-bottom: 1.5rem; }
-    .btn-banner { background: var(--rose-gold); color: white; border: none; padding: 0.6rem 1.8rem; border-radius: 25px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Vazirmatn', sans-serif; }
-    .btn-banner:hover { background: var(--rose-gold-dark); transform: translateY(-2px); }
-    .banner-img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; }
+    /* ========== BANNER GRID 3 ========== */
+    .banners-3 { padding: 3rem 0; }
+    .banner-square {
+      aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer;
+    }
+    .banner-square img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .banner-square:hover img { transform: scale(1.04); }
+    .banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 40%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 1.25rem;
+    }
+    .banner-overlay .tag { font-size: 0.7rem; color: rgba(255,255,255,0.8); margin-bottom: 0.3rem; }
+    .banner-overlay h4 { font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0 0 0.6rem; }
+    .btn-outline-white {
+      border: 1.5px solid rgba(255,255,255,0.7); color: #fff; background: transparent;
+      font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 6px;
+      cursor: pointer; transition: background 0.2s; display: inline-block;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
-    /* Brands */
-    .brands-section { padding: 4rem 0; background: white; }
-    .brand-item { display: flex; align-items: center; justify-content: center; padding: 1.5rem; border: 2px solid var(--gray-mid); border-radius: 12px; transition: all 0.3s; cursor: pointer; background: white; }
-    .brand-item:hover { border-color: var(--rose-gold); box-shadow: 0 5px 20px rgba(201,169,110,0.15); }
-    .brand-item span { font-size: 1.3rem; font-weight: 800; color: var(--text-muted); letter-spacing: 1px; transition: color 0.3s; }
-    .brand-item:hover span { color: var(--rose-gold); }
+    /* ========== WIDE BANNER ========== */
+    .wide-banner-section { padding: 0 0 3rem; }
+    .wide-banner { position: relative; border-radius: 12px; overflow: hidden; height: 200px; }
+    .wide-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .wide-banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to left, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.2) 100%);
+      display: flex; align-items: center; padding: 0 3rem;
+    }
+    .wide-banner-text h3 { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+    .wide-banner-text p { color: rgba(255,255,255,0.85); font-size: 0.9rem; margin-bottom: 1rem; }
 
-    /* Newsletter */
-    .newsletter-section { padding: 5rem 0; background: linear-gradient(135deg, var(--pink-light) 0%, white 100%); }
-    .newsletter-box { background: white; border-radius: 24px; padding: 3rem; box-shadow: 0 10px 50px rgba(201,169,110,0.1); text-align: center; max-width: 600px; margin: 0 auto; }
-    .newsletter-icon { width: 70px; height: 70px; background: var(--pink-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: var(--rose-gold); }
-    .newsletter-box h3 { font-size: 1.6rem; font-weight: 800; color: var(--black); margin-bottom: 0.5rem; }
-    .newsletter-box p { color: var(--text-muted); margin-bottom: 1.5rem; }
-    .input-group-newsletter { display: flex; gap: 0.5rem; max-width: 420px; margin: 0 auto; }
-    .input-group-newsletter input { flex: 1; padding: 0.75rem 1.2rem; border: 2px solid var(--gray-mid); border-radius: 25px; font-family: 'Vazirmatn', sans-serif; font-size: 0.9rem; outline: none; }
-    .input-group-newsletter input:focus { border-color: var(--rose-gold); }
-    .btn-subscribe { background: var(--rose-gold); color: white; border: none; padding: 0.75rem 1.8rem; border-radius: 25px; font-weight: 700; font-size: 0.9rem; font-family: 'Vazirmatn', sans-serif; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
-    .btn-subscribe:hover { background: var(--rose-gold-dark); }
+    /* ========== MEN'S GROOMING ========== */
+    .mens-section { background: #1A1A1A; padding: 4rem 0; }
+    .mens-img-wrap { position: relative; border-radius: 12px; overflow: hidden; }
+    .mens-img-wrap img { width: 100%; height: 400px; object-fit: cover; filter: brightness(0.7); border-radius: 12px; }
+    .mens-content { color: #fff; }
+    .mens-content .label { color: var(--color-accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; display: block; margin-bottom: 0.5rem; }
+    .mens-content h2 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem; }
+    .mens-content .subtitle { color: var(--color-accent); font-size: 1.1rem; font-weight: 600; margin-bottom: 1.25rem; display: block; }
+    .feature-list { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+    .feature-list li { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; color: rgba(255,255,255,0.85); font-size: 0.9rem; }
+    .feature-list li i { color: var(--color-accent); font-size: 0.85rem; }
+    .btn-accent {
+      background: var(--color-accent); color: #1A1A1A; border: none;
+      padding: 0.65rem 1.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 800;
+      cursor: pointer; transition: background 0.2s; display: inline-block;
+    }
+    .btn-accent:hover { background: #b8962d; color: #1A1A1A; }
 
-    /* Footer */
-    footer { background: var(--black); color: rgba(255,255,255,0.7); padding: 4rem 0 0; }
-    .footer-logo { font-size: 1.6rem; font-weight: 800; color: var(--rose-gold); margin-bottom: 1rem; }
-    .footer-logo span { color: white; }
-    .footer-about { line-height: 1.8; font-size: 0.9rem; color: rgba(255,255,255,0.6); }
-    .footer-social { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
-    .social-link { width: 38px; height: 38px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); text-decoration: none; transition: all 0.3s; font-size: 0.9rem; }
-    .social-link:hover { background: var(--rose-gold); color: white; }
-    .footer-title { color: white; font-weight: 700; font-size: 1rem; margin-bottom: 1.2rem; position: relative; padding-bottom: 0.7rem; }
-    .footer-title::after { content: ''; position: absolute; bottom: 0; right: 0; width: 40px; height: 2px; background: var(--rose-gold); border-radius: 2px; }
+    .mens-product-card {
+      background: #2B2B2B; border-radius: 12px; overflow: hidden; transition: transform 0.2s;
+    }
+    .mens-product-card:hover { transform: translateY(-4px); }
+    .mens-product-card img { width: 100%; height: 160px; object-fit: cover; }
+    .mens-product-card .body { padding: 0.85rem; }
+    .mens-product-card .name { font-size: 0.82rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+    .mens-product-card .price { font-size: 0.9rem; font-weight: 800; color: var(--color-accent); }
+
+    /* ========== BANNER GRID 2 ========== */
+    .banners-2 { padding: 3rem 0; }
+    .banner-rect {
+      aspect-ratio: 3/2; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer;
+    }
+    .banner-rect img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .banner-rect:hover img { transform: scale(1.04); }
+
+    /* ========== BRANDS SECTION ========== */
+    .brands-section { background: #fff; padding: 3rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+    .brand-logo-box {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      padding: 1.2rem 0.5rem; border: 1.5px solid var(--border-color); border-radius: 12px;
+      background: #fff; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .brand-logo-box:hover { border-color: var(--color-primary); box-shadow: 0 4px 16px rgba(74,124,89,0.12); }
+    .brand-icon {
+      width: 60px; height: 60px; border-radius: 50%; background: var(--bg-main);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 800; color: var(--color-text);
+      text-align: center; line-height: 1.2;
+    }
+    .brand-name { font-size: 0.78rem; font-weight: 700; color: var(--color-text); }
+
+    /* ========== PRODUCTS GRID ========== */
+    .products-section { padding: 3rem 0; }
+    .product-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+      overflow: hidden; transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .product-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .product-img-wrap { position: relative; overflow: hidden; }
+    .product-img-wrap img { width: 100%; height: 220px; object-fit: cover; transition: transform 0.4s; }
+    .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+    .product-badge-wrap { position: absolute; top: 0.6rem; right: 0.6rem; }
+    .product-badge-wrap .badge-discount { font-size: 0.7rem; }
+    .product-body { padding: 1rem; }
+    .product-brand { font-size: 0.72rem; color: #888; margin-bottom: 0.2rem; }
+    .product-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--color-text); }
+    .product-stars { color: var(--color-accent); font-size: 0.75rem; margin-bottom: 0.5rem; }
+    .product-price-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .btn-add-cart {
+      width: 100%; background: var(--color-primary); color: #fff; border: none;
+      padding: 0.5rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-add-cart:hover { background: #3a6347; }
+
+    /* ========== BLOG SECTION ========== */
+    .blog-section { padding: 3rem 0; background: #fff; border-top: 1px solid var(--border-color); }
+    .blog-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+    .blog-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .blog-card img { width: 100%; height: 200px; object-fit: cover; }
+    .blog-card-body { padding: 1.25rem; }
+    .blog-cat { font-size: 0.72rem; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+    .blog-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--color-text); }
+    .blog-excerpt { font-size: 0.82rem; color: #666; line-height: 1.7; margin-bottom: 0.75rem; }
+    .blog-meta { font-size: 0.72rem; color: #999; margin-bottom: 0.75rem; }
+    .btn-read-more {
+      font-size: 0.8rem; font-weight: 700; color: var(--color-primary);
+      border: 1.5px solid var(--color-primary); padding: 0.35rem 0.9rem;
+      border-radius: 6px; background: transparent; cursor: pointer; transition: background 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .btn-read-more:hover { background: var(--color-primary); color: #fff; }
+
+    /* ========== FOOTER ========== */
+    .site-footer { background: #2B2B2B; color: rgba(255,255,255,0.85); padding: 3rem 0 1.5rem; }
+    .footer-logo { font-size: 1.4rem; font-weight: 800; color: var(--color-primary); margin-bottom: 0.75rem; }
+    .footer-logo span { color: var(--color-accent); }
+    .footer-desc { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 1rem; }
+    .footer-social { display: flex; gap: 0.5rem; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7);
+      font-size: 0.9rem; transition: background 0.2s; cursor: pointer;
+    }
+    .social-btn:hover { background: var(--color-primary); color: #fff; }
+    .footer-title { font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 1rem; }
     .footer-links { list-style: none; padding: 0; margin: 0; }
-    .footer-links li { margin-bottom: 0.6rem; }
-    .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
-    .footer-links a::before { content: '‹'; color: var(--rose-gold); font-weight: 700; }
-    .footer-links a:hover { color: var(--rose-gold); }
-    .footer-contact-item { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1rem; font-size: 0.88rem; color: rgba(255,255,255,0.65); }
-    .footer-contact-item i { color: var(--rose-gold); margin-top: 0.2rem; min-width: 16px; }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 3rem; padding: 1.2rem 0; text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.4); }
-    .footer-bottom a { color: var(--rose-gold); text-decoration: none; }
+    .footer-links li { margin-bottom: 0.5rem; }
+    .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--color-primary); }
+    .contact-item { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.75rem; font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+    .contact-item i { color: var(--color-primary); margin-top: 2px; }
+    .newsletter-input { display: flex; gap: 0.5rem; }
+    .newsletter-input input {
+      flex: 1; padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08); color: #fff; font-size: 0.85rem; outline: none;
+    }
+    .newsletter-input input::placeholder { color: rgba(255,255,255,0.4); }
+    .newsletter-input button {
+      background: var(--color-primary); color: #fff; border: none;
+      padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; white-space: nowrap;
+    }
+    .newsletter-input button:hover { background: #3a6347; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 2rem; padding-top: 1.2rem; text-align: center; font-size: 0.78rem; color: rgba(255,255,255,0.4); }
 
-    /* Scroll to top */
-    .scroll-top { position: fixed; bottom: 2rem; left: 2rem; width: 45px; height: 45px; background: var(--rose-gold); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 20px rgba(201,169,110,0.4); z-index: 1000; transition: all 0.3s; opacity: 0; pointer-events: none; }
-    .scroll-top.visible { opacity: 1; pointer-events: all; }
-    .scroll-top:hover { background: var(--rose-gold-dark); transform: translateY(-3px); }
+    /* ========== SCROLL TOP ========== */
+    #scrollTop {
+      position: fixed; bottom: 1.5rem; left: 1.5rem;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--color-primary); color: #fff; border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(74,124,89,0.4);
+      transition: opacity 0.3s; opacity: 0; pointer-events: none; z-index: 500;
+    }
+    #scrollTop.visible { opacity: 1; pointer-events: all; }
+    #scrollTop:hover { background: #3a6347; }
+
+    /* ========== MISC ========== */
+    .section-py { padding: 3rem 0; }
+    .btn-see-all {
+      background: transparent; border: 2px solid var(--color-primary); color: var(--color-primary);
+      padding: 0.6rem 2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s, color 0.2s; display: inline-block;
+    }
+    .btn-see-all:hover { background: var(--color-primary); color: #fff; }
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg sticky-top">
+<!-- ========== HEADER ========== -->
+<header class="site-header">
   <div class="container">
-    <a class="navbar-brand" href="home.html">لوکس<span>بیوتی</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navMain">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" href="home.html">صفحه اصلی</a></li>
-        <li class="nav-item"><a class="nav-link" href="products.html">محصولات</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">دسته‌بندی‌ها</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="products.html">مراقبت پوست</a></li>
-            <li><a class="dropdown-item" href="products.html">عطر و ادکلن</a></li>
-            <li><a class="dropdown-item" href="products.html">محصولات مردانه</a></li>
-            <li><a class="dropdown-item" href="products.html">مراقبت مو</a></li>
-            <li><a class="dropdown-item" href="products.html">آرایش ناخن</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="#">تخفیف‌ها</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">درباره ما</a></li>
-      </ul>
-      <div class="d-flex align-items-center gap-3">
-        <div class="search-box d-none d-lg-flex">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="جستجو در محصولات...">
-        </div>
-        <a href="#" class="nav-icon"><i class="far fa-heart"></i></a>
-        <a href="cart.html" class="nav-icon" style="position:relative;">
+    <div class="header-inner">
+      <a class="brand-logo" href="home.html">لوکس<span>بیوتی</span></a>
+      <nav>
+        <ul class="main-nav">
+          <li><a class="active" href="home.html">خانه</a></li>
+          <li><a href="products.html">محصولات</a></li>
+          <li><a href="#">برندها</a></li>
+          <li><a href="#">وبلاگ</a></li>
+          <li><a href="#">تماس با ما</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="btn-icon" title="جستجو"><i class="fas fa-search"></i></button>
+        <a href="cart.html" class="btn-icon" title="سبد خرید" style="position:relative;">
           <i class="fas fa-shopping-bag"></i>
           <span class="cart-badge">۳</span>
         </a>
-        <a href="#" class="nav-icon"><i class="far fa-user"></i></a>
+        <a href="#" class="btn-login">ورود / ثبت‌نام</a>
       </div>
+      <button class="navbar-toggler-custom" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <!-- Mobile nav -->
+    <div id="mobileMenu" style="display:none; padding-top:0.75rem; border-top:1px solid var(--border-color); margin-top:0.75rem;">
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.25rem;">
+        <li><a href="home.html" style="display:block;padding:0.4rem 0;font-weight:600;color:var(--color-primary);">خانه</a></li>
+        <li><a href="products.html" style="display:block;padding:0.4rem 0;font-weight:500;">محصولات</a></li>
+        <li><a href="#" style="display:block;padding:0.4rem 0;font-weight:500;">برندها</a></li>
+        <li><a href="#" style="display:block;padding:0.4rem 0;font-weight:500;">وبلاگ</a></li>
+        <li><a href="#" style="display:block;padding:0.4rem 0;font-weight:500;">تماس با ما</a></li>
+      </ul>
     </div>
   </div>
-</nav>
+</header>
 
-<!-- Hero Carousel -->
+<!-- ========== 1. HERO SLIDER ========== -->
 <section class="hero-section">
-  <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
       <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
@@ -235,70 +404,40 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <div class="hero-slide slide-1">
+        <img src="https://picsum.photos/1400/500?random=1" alt="اسلاید ۱">
+        <div class="hero-overlay">
           <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-6 hero-content">
-                <span class="hero-badge">✨ کالکشن بهار ۱۴۰۳</span>
-                <h1 class="hero-title">زیبایی با <span>اصالت</span> را تجربه کنید</h1>
-                <p class="hero-subtitle">بهترین محصولات آرایشی و بهداشتی برندهای معتبر جهانی را با بهترین قیمت از ما بخواهید.</p>
-                <div class="d-flex flex-wrap gap-2">
-                  <a href="products.html" class="btn-hero">خرید کنید</a>
-                  <a href="#" class="btn-hero-outline">مشاهده کالکشن</a>
-                </div>
-              </div>
-              <div class="col-lg-6 d-none d-lg-block text-center">
-                <div class="hero-image-container">
-                  <div class="hero-circle"></div>
-                  <img src="https://picsum.photos/450/450?random=10" alt="محصول ویژه" class="hero-img rounded-circle" style="width:380px;height:380px;object-fit:cover;">
-                </div>
-              </div>
+            <div class="hero-text">
+              <span class="tag">جدیدترین محصولات</span>
+              <h1>زیبایی را با ما تجربه کنید</h1>
+              <p>بهترین محصولات آرایشی و بهداشتی اورجینال با ضمانت اصالت کالا</p>
+              <a href="products.html" class="btn-primary-green">مشاهده محصولات</a>
             </div>
           </div>
         </div>
       </div>
       <div class="carousel-item">
-        <div class="hero-slide slide-2">
+        <img src="https://picsum.photos/1400/500?random=2" alt="اسلاید ۲">
+        <div class="hero-overlay">
           <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-6 hero-content">
-                <span class="hero-badge">🌹 ویژه ولنتاین</span>
-                <h1 class="hero-title">عطرهای <span>لوکس</span> برای لحظات خاص</h1>
-                <p class="hero-subtitle">کلکسیون عطرهای اورجینال دیور، شانل و جیوانشی با تخفیف ویژه تا ۳۰٪</p>
-                <div class="d-flex flex-wrap gap-2">
-                  <a href="products.html" class="btn-hero">مشاهده عطرها</a>
-                  <a href="#" class="btn-hero-outline">پیشنهاد هدیه</a>
-                </div>
-              </div>
-              <div class="col-lg-6 d-none d-lg-block text-center">
-                <div class="hero-image-container">
-                  <div class="hero-circle"></div>
-                  <img src="https://picsum.photos/450/450?random=20" alt="عطر لوکس" class="hero-img rounded-circle" style="width:380px;height:380px;object-fit:cover;">
-                </div>
-              </div>
+            <div class="hero-text">
+              <span class="tag">تخفیف ویژه</span>
+              <h1>تا ۵۰٪ تخفیف روی برندهای برتر</h1>
+              <p>عطرها، کرم‌ها و لوازم آرایشی برندهای معتبر جهانی با قیمت استثنایی</p>
+              <a href="products.html" class="btn-primary-green">خرید کنید</a>
             </div>
           </div>
         </div>
       </div>
       <div class="carousel-item">
-        <div class="hero-slide slide-3">
+        <img src="https://picsum.photos/1400/500?random=3" alt="اسلاید ۳">
+        <div class="hero-overlay">
           <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-6 hero-content">
-                <span class="hero-badge">💪 محصولات مردانه</span>
-                <h1 class="hero-title">مراقبت <span>حرفه‌ای</span> برای آقایان</h1>
-                <p class="hero-subtitle">بهترین محصولات بهداشتی و مراقبت پوست برای آقایانی که به ظاهر خود اهمیت می‌دهند.</p>
-                <div class="d-flex flex-wrap gap-2">
-                  <a href="products.html" class="btn-hero">محصولات مردانه</a>
-                  <a href="#" class="btn-hero-outline">راهنمای مراقبت</a>
-                </div>
-              </div>
-              <div class="col-lg-6 d-none d-lg-block text-center">
-                <div class="hero-image-container">
-                  <div class="hero-circle"></div>
-                  <img src="https://picsum.photos/450/450?random=30" alt="محصولات مردانه" class="hero-img rounded-circle" style="width:380px;height:380px;object-fit:cover;">
-                </div>
-              </div>
+            <div class="hero-text">
+              <span class="tag">برند جدید</span>
+              <h1>مراقبت پوست حرفه‌ای در خانه</h1>
+              <p>روتین مراقبت پوست خود را با محصولات دکتر‌های پوست طراحی کنید</p>
+              <a href="products.html" class="btn-primary-green">کشف کنید</a>
             </div>
           </div>
         </div>
@@ -313,117 +452,189 @@
   </div>
 </section>
 
-<!-- Stats Bar -->
-<div class="stats-bar">
+<!-- ========== 2. CATEGORY BAR ========== -->
+<section class="category-bar-section">
+  <div class="container">
+    <div class="category-scroll">
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">🧴</div>
+          <span class="cat-name">مراقبت پوست</span>
+        </div>
+      </a>
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">🌸</div>
+          <span class="cat-name">عطر و ادکلن</span>
+        </div>
+      </a>
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">🪒</div>
+          <span class="cat-name">مردانه</span>
+        </div>
+      </a>
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">💆</div>
+          <span class="cat-name">مراقبت مو</span>
+        </div>
+      </a>
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">👁️</div>
+          <span class="cat-name">آرایش چشم</span>
+        </div>
+      </a>
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">💋</div>
+          <span class="cat-name">لب و رژ</span>
+        </div>
+      </a>
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">💅</div>
+          <span class="cat-name">ناخن</span>
+        </div>
+      </a>
+      <a href="products.html" style="text-decoration:none;color:inherit;">
+        <div class="cat-item">
+          <div class="cat-icon">🧼</div>
+          <span class="cat-name">بهداشت</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3. SALE SECTION ========== -->
+<section class="sale-section">
+  <div class="container">
+    <div class="sale-header">
+      <div class="sale-title section-title" style="margin-bottom:0;">
+        <span class="label"><i class="fas fa-fire" style="margin-left:4px;"></i> پیشنهاد ویژه</span>
+        <h2>محصولات تخفیف‌دار</h2>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+        <span style="color:rgba(255,255,255,0.8);font-size:0.82rem;">پایان پیشنهاد تا:</span>
+        <div class="countdown">
+          <div class="countdown-unit"><span class="countdown-num" id="cd-h">00</span><span class="countdown-label">ساعت</span></div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-unit"><span class="countdown-num" id="cd-m">00</span><span class="countdown-label">دقیقه</span></div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-unit"><span class="countdown-num" id="cd-s">00</span><span class="countdown-label">ثانیه</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sale-scroll">
+      <!-- Sale Card 1 -->
+      <div class="sale-card">
+        <img src="https://picsum.photos/300/300?random=10" alt="محصول">
+        <div class="sale-card-body">
+          <div class="sale-card-name">کرم ضد آفتاب SPF50</div>
+          <div class="price-row">
+            <span class="badge-discount">۳۰٪</span>
+            <span class="price-old">۱۸۵,۰۰۰</span>
+          </div>
+          <div class="price-new">۱۲۹,۵۰۰ تومان</div>
+        </div>
+      </div>
+      <!-- Sale Card 2 -->
+      <div class="sale-card">
+        <img src="https://picsum.photos/300/300?random=11" alt="محصول">
+        <div class="sale-card-body">
+          <div class="sale-card-name">سرم روشن‌کننده ویتامین C</div>
+          <div class="price-row">
+            <span class="badge-discount">۲۵٪</span>
+            <span class="price-old">۲۴۰,۰۰۰</span>
+          </div>
+          <div class="price-new">۱۸۰,۰۰۰ تومان</div>
+        </div>
+      </div>
+      <!-- Sale Card 3 -->
+      <div class="sale-card">
+        <img src="https://picsum.photos/300/300?random=12" alt="محصول">
+        <div class="sale-card-body">
+          <div class="sale-card-name">ماسک صورت آبرسان</div>
+          <div class="price-row">
+            <span class="badge-discount">۴۰٪</span>
+            <span class="price-old">۹۵,۰۰۰</span>
+          </div>
+          <div class="price-new">۵۷,۰۰۰ تومان</div>
+        </div>
+      </div>
+      <!-- Sale Card 4 -->
+      <div class="sale-card">
+        <img src="https://picsum.photos/300/300?random=13" alt="محصول">
+        <div class="sale-card-body">
+          <div class="sale-card-name">رژ لب مات لورآل</div>
+          <div class="price-row">
+            <span class="badge-discount">۲۰٪</span>
+            <span class="price-old">۱۱۰,۰۰۰</span>
+          </div>
+          <div class="price-new">۸۸,۰۰۰ تومان</div>
+        </div>
+      </div>
+      <!-- Sale Card 5 -->
+      <div class="sale-card">
+        <img src="https://picsum.photos/300/300?random=14" alt="محصول">
+        <div class="sale-card-body">
+          <div class="sale-card-name">عطر زنانه شنل No.5</div>
+          <div class="price-row">
+            <span class="badge-discount">۱۵٪</span>
+            <span class="price-old">۸۵۰,۰۰۰</span>
+          </div>
+          <div class="price-new">۷۲۲,۵۰۰ تومان</div>
+        </div>
+      </div>
+      <!-- Sale Card 6 -->
+      <div class="sale-card">
+        <img src="https://picsum.photos/300/300?random=15" alt="محصول">
+        <div class="sale-card-body">
+          <div class="sale-card-name">کانسیلر پوشش‌دهنده</div>
+          <div class="price-row">
+            <span class="badge-discount">۳۵٪</span>
+            <span class="price-old">۱۳۵,۰۰۰</span>
+          </div>
+          <div class="price-new">۸۷,۷۵۰ تومان</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. BANNER GRID 3 ========== -->
+<section class="banners-3">
   <div class="container">
     <div class="row g-3">
-      <div class="col-6 col-md-3">
-        <div class="stat-item justify-content-center justify-content-md-start">
-          <i class="fas fa-truck"></i>
-          <div class="stat-text">
-            <div class="stat-title">ارسال رایگان</div>
-            <div class="stat-desc">برای خرید بالای ۵۰۰,۰۰۰ تومان</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="stat-item justify-content-center justify-content-md-start">
-          <i class="fas fa-shield-alt"></i>
-          <div class="stat-text">
-            <div class="stat-title">ضمانت اصالت</div>
-            <div class="stat-desc">تمام محصولات اورجینال</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="stat-item justify-content-center justify-content-md-start">
-          <i class="fas fa-undo-alt"></i>
-          <div class="stat-text">
-            <div class="stat-title">بازگشت آسان</div>
-            <div class="stat-desc">تا ۷ روز ضمانت برگشت</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="stat-item justify-content-center justify-content-md-start">
-          <i class="fas fa-headset"></i>
-          <div class="stat-text">
-            <div class="stat-title">پشتیبانی ۲۴/۷</div>
-            <div class="stat-desc">همیشه در خدمت شما</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Categories -->
-<section class="categories-section">
-  <div class="container">
-    <div class="section-title">
-      <span class="subtitle">دسته‌بندی محصولات</span>
-      <h2>هر آنچه نیاز دارید</h2>
-      <p>محصولات آرایشی و بهداشتی را بر اساس دسته‌بندی پیدا کنید</p>
-      <div class="title-line"></div>
-    </div>
-    <div class="row g-4">
-      <div class="col-6 col-md-4 col-lg-2">
-        <a href="products.html" style="text-decoration:none;">
-          <div class="category-card cat-1">
-            <div class="category-icon"><i class="fas fa-spa"></i></div>
-            <h5>مراقبت پوست</h5>
-            <p>کرم و لوسیون</p>
-            <span class="category-count">۱۴۲ محصول</span>
+      <div class="col-12 col-md-4">
+        <a href="products.html" class="banner-square d-block">
+          <img src="https://picsum.photos/400/400?random=20" alt="مراقبت پوست">
+          <div class="banner-overlay">
+            <span class="tag">مراقبت پوست</span>
+            <h4>روتین روزانه پوست</h4>
+            <span class="btn-outline-white">مشاهده</span>
           </div>
         </a>
       </div>
-      <div class="col-6 col-md-4 col-lg-2">
-        <a href="products.html" style="text-decoration:none;">
-          <div class="category-card cat-2">
-            <div class="category-icon"><i class="fas fa-wind"></i></div>
-            <h5>عطر و ادکلن</h5>
-            <p>بوی دلنشین</p>
-            <span class="category-count">۸۶ محصول</span>
+      <div class="col-12 col-md-4">
+        <a href="products.html" class="banner-square d-block">
+          <img src="https://picsum.photos/400/400?random=21" alt="عطر و ادکلن">
+          <div class="banner-overlay">
+            <span class="tag">عطر و ادکلن</span>
+            <h4>عطرهای اورجینال</h4>
+            <span class="btn-outline-white">مشاهده</span>
           </div>
         </a>
       </div>
-      <div class="col-6 col-md-4 col-lg-2">
-        <a href="products.html" style="text-decoration:none;">
-          <div class="category-card cat-3">
-            <div class="category-icon"><i class="fas fa-male"></i></div>
-            <h5>مردانه</h5>
-            <p>مراقبت خاص</p>
-            <span class="category-count">۶۳ محصول</span>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-2">
-        <a href="products.html" style="text-decoration:none;">
-          <div class="category-card cat-4">
-            <div class="category-icon"><i class="fas fa-leaf"></i></div>
-            <h5>مراقبت مو</h5>
-            <p>شامپو و ماسک</p>
-            <span class="category-count">۹۸ محصول</span>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-2">
-        <a href="products.html" style="text-decoration:none;">
-          <div class="category-card cat-5">
-            <div class="category-icon"><i class="fas fa-paint-brush"></i></div>
-            <h5>آرایش ناخن</h5>
-            <p>لاک و ژل</p>
-            <span class="category-count">۷۴ محصول</span>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-4 col-lg-2">
-        <a href="products.html" style="text-decoration:none;">
-          <div class="category-card cat-6">
-            <div class="category-icon"><i class="fas fa-kiss-wink-heart"></i></div>
-            <h5>آرایش لب</h5>
-            <p>رژ و بالم</p>
-            <span class="category-count">۵۱ محصول</span>
+      <div class="col-12 col-md-4">
+        <a href="products.html" class="banner-square d-block">
+          <img src="https://picsum.photos/400/400?random=22" alt="آرایش چشم">
+          <div class="banner-overlay">
+            <span class="tag">آرایش چشم</span>
+            <h4>نگاهی درخشان</h4>
+            <span class="btn-outline-white">مشاهده</span>
           </div>
         </a>
       </div>
@@ -431,438 +642,536 @@
   </div>
 </section>
 
-<!-- Featured Products -->
-<section class="products-section">
+<!-- ========== 5. WIDE BANNER ========== -->
+<section class="wide-banner-section">
   <div class="container">
-    <div class="section-title">
-      <span class="subtitle">پیشنهاد ویژه</span>
-      <h2>محصولات برتر</h2>
-      <p>بهترین‌ها را با بهترین قیمت کشف کنید</p>
-      <div class="title-line"></div>
-    </div>
-
-    <div class="filter-tabs">
-      <button class="filter-tab active">همه</button>
-      <button class="filter-tab">پرفروش‌ترین</button>
-      <button class="filter-tab">جدیدترین</button>
-      <button class="filter-tab">تخفیف‌دار</button>
-      <button class="filter-tab">ارزان‌ترین</button>
-    </div>
-
-    <div class="row g-4">
-      <!-- Product 1 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=1" alt="کرم مرطوب‌کننده">
-            <div class="product-badge"><span class="badge-discount">۲۵٪</span></div>
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">لورآل پاریس</div>
-            <div class="product-name">کرم مرطوب‌کننده روزانه SPF30</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-              <span>(۱۲۸)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۱۸۵,۰۰۰ تومان</div>
-                <div class="price-old">۲۴۵,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Product 2 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=2" alt="ریمل">
-            <div class="product-badge"><span class="badge-new">جدید</span></div>
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">مایبلین نیویورک</div>
-            <div class="product-name">ریمل حجم‌دهنده مشکی ۲۴ ساعته</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-              <span>(۲۴۵)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۹۸,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Product 3 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=3" alt="عطر دیور">
-            <div class="product-badge"><span class="badge-best">پرفروش</span></div>
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">دیور</div>
-            <div class="product-name">عطر Miss Dior زنانه ۵۰ml</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <span>(۳۸۶)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۱,۲۵۰,۰۰۰ تومان</div>
-                <div class="price-old">۱,۵۰۰,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Product 4 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=4" alt="شامپو">
-            <div class="product-badge"><span class="badge-discount">۱۵٪</span></div>
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">نیوآ</div>
-            <div class="product-name">شامپو تقویت‌کننده با کراتین ۴۰۰ml</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-              <span>(۹۷)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۶۸,۰۰۰ تومان</div>
-                <div class="price-old">۸۰,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Product 5 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=5" alt="رژلب">
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">شانل</div>
-            <div class="product-name">رژلب مات Chanel Rouge Allure</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <span>(۲۱۲)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۸۵۰,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Product 6 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=6" alt="فوندیشن">
-            <div class="product-badge"><span class="badge-new">جدید</span></div>
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">لورآل پاریس</div>
-            <div class="product-name">کرم پودر فول کاور مدل Infallible</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
-              <span>(۱۵۶)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۱۴۵,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Product 7 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=7" alt="ادکلن مردانه">
-            <div class="product-badge"><span class="badge-discount">۳۰٪</span></div>
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">دیور</div>
-            <div class="product-name">ادکلن مردانه Sauvage EDP 100ml</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-              <span>(۵۲۳)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۱,۶۸۰,۰۰۰ تومان</div>
-                <div class="price-old">۲,۴۰۰,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Product 8 -->
-      <div class="col-6 col-md-4 col-xl-3">
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="https://picsum.photos/300/300?random=8" alt="سرم ویتامین C">
-            <div class="product-badge"><span class="badge-best">پرفروش</span></div>
-            <div class="product-actions">
-              <button class="btn-action"><i class="far fa-heart"></i></button>
-              <button class="btn-action"><i class="fas fa-eye"></i></button>
-              <button class="btn-action"><i class="fas fa-exchange-alt"></i></button>
-            </div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">نیوآ</div>
-            <div class="product-name">سرم روشن‌کننده ویتامین C 30ml</div>
-            <div class="product-stars">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-              <span>(۳۴۱)</span>
-            </div>
-            <div class="product-price">
-              <div>
-                <div class="price-new">۲۲۵,۰۰۰ تومان</div>
-              </div>
-              <button class="btn-add-cart"><i class="fas fa-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-5">
-      <a href="products.html" class="btn-hero" style="text-decoration:none; display:inline-block;">مشاهده همه محصولات <i class="fas fa-arrow-left me-1"></i></a>
-    </div>
-  </div>
-</section>
-
-<!-- Mid Banners -->
-<section class="mid-banner">
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="banner-card">
-          <span class="banner-tag">پیشنهاد ویژه</span>
-          <img src="https://picsum.photos/400/200?random=40" alt="سرم پوست" class="banner-img">
-          <h3 class="banner-title">مجموعه مراقبت شبانه پوست</h3>
-          <p class="banner-desc">بهترین سرم‌ها و کرم‌های شب برای داشتن پوستی جوان‌تر و شاداب‌تر</p>
-          <div class="banner-price-tag">از ۱۲۰,۰۰۰ تومان</div>
-          <button class="btn-banner">خرید کن</button>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="banner-card" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
-          <span class="banner-tag" style="background:#f39c12;">تخفیف ۴۰٪</span>
-          <img src="https://picsum.photos/400/200?random=41" alt="آرایش چشم" class="banner-img">
-          <h3 class="banner-title">پکیج آرایش چشم حرفه‌ای</h3>
-          <p class="banner-desc">سایه، خط چشم، ریمل و رنگ ابرو همه با هم در یک پکیج ویژه</p>
-          <div class="banner-price-tag" style="color:#f39c12;">از ۲۸۵,۰۰۰ تومان</div>
-          <button class="btn-banner" style="background:#f39c12;">خرید پکیج</button>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="banner-card" style="background: linear-gradient(135deg, #0d2136 0%, #1a3a52 100%);">
-          <span class="banner-tag" style="background:#27ae60;">جدید</span>
-          <img src="https://picsum.photos/400/200?random=42" alt="محصولات مردانه" class="banner-img">
-          <h3 class="banner-title">کالکشن جدید مردانه ۱۴۰۳</h3>
-          <p class="banner-desc">ژل ریش، بعد از اصلاح، دئودورانت و مرطوب‌کننده برای آقایان</p>
-          <div class="banner-price-tag" style="color:#27ae60;">از ۴۵,۰۰۰ تومان</div>
-          <button class="btn-banner" style="background:#27ae60;">دیدن کالکشن</button>
+    <div class="wide-banner">
+      <img src="https://picsum.photos/1400/200?random=30" alt="بنر ویژه">
+      <div class="wide-banner-overlay">
+        <div class="wide-banner-text">
+          <h3>ارسال رایگان برای خرید بالای ۵۰۰,۰۰۰ تومان</h3>
+          <p>همین حالا خرید کنید و از ارسال رایگان سراسری بهره‌مند شوید</p>
+          <a href="products.html" class="btn-primary-green">خرید کنید</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Brands -->
+<!-- ========== 6. MEN'S GROOMING ========== -->
+<section class="mens-section">
+  <div class="container">
+    <div class="row g-4 align-items-center mb-4">
+      <div class="col-12 col-lg-5">
+        <div class="mens-img-wrap">
+          <img src="https://picsum.photos/600/400?random=40" alt="ماشین اصلاح مردانه">
+        </div>
+      </div>
+      <div class="col-12 col-lg-7">
+        <div class="mens-content">
+          <span class="label">MEN'S GROOMING</span>
+          <h2>ماشین اصلاح مردانه</h2>
+          <span class="subtitle">ظاهر حرفه‌ای، احساس قدرت</span>
+          <ul class="feature-list">
+            <li><i class="fas fa-check-circle"></i> تیغه‌های فولادی ژاپنی با دوام بالا</li>
+            <li><i class="fas fa-check-circle"></i> موتور قوی با ۱۰,۰۰۰ دور در دقیقه</li>
+            <li><i class="fas fa-check-circle"></i> باتری ۹۰ دقیقه‌ای با شارژ سریع</li>
+            <li><i class="fas fa-check-circle"></i> ضدآب کامل — قابل استفاده زیر دوش</li>
+            <li><i class="fas fa-check-circle"></i> ۵ سطح تنظیم طول موی قابل تنظیم</li>
+          </ul>
+          <a href="products.html" class="btn-accent">مشاهده همه محصولات مردانه</a>
+        </div>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div class="mens-product-card">
+          <img src="https://picsum.photos/300/200?random=41" alt="ماشین اصلاح">
+          <div class="body">
+            <div class="name">ماشین اصلاح Philips S9000</div>
+            <div class="price">۲,۸۵۰,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="mens-product-card">
+          <img src="https://picsum.photos/300/200?random=42" alt="ماشین اصلاح">
+          <div class="body">
+            <div class="name">ماشین اصلاح Braun Series 7</div>
+            <div class="price">۳,۲۰۰,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="mens-product-card">
+          <img src="https://picsum.photos/300/200?random=43" alt="ماشین اصلاح">
+          <div class="body">
+            <div class="name">تریمر موی سر Wahl</div>
+            <div class="price">۱,۴۵۰,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="mens-product-card">
+          <img src="https://picsum.photos/300/200?random=44" alt="ماشین اصلاح">
+          <div class="body">
+            <div class="name">ست مراقبت ریش Gillette</div>
+            <div class="price">۹۵۰,۰۰۰ تومان</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 7. BANNER GRID 2 ========== -->
+<section class="banners-2">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <a href="products.html" class="banner-rect d-block">
+          <img src="https://picsum.photos/700/400?random=50" alt="بنر ۱">
+          <div class="banner-overlay">
+            <span class="tag">پیشنهاد ویژه</span>
+            <h4>کرم‌های مراقبتی لوکس</h4>
+            <span class="btn-outline-white">مشاهده</span>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-md-6">
+        <a href="products.html" class="banner-rect d-block">
+          <img src="https://picsum.photos/700/400?random=51" alt="بنر ۲">
+          <div class="banner-overlay">
+            <span class="tag">جدید</span>
+            <h4>مجموعه عطر تابستانی</h4>
+            <span class="btn-outline-white">مشاهده</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 8. BRANDS SECTION ========== -->
 <section class="brands-section">
   <div class="container">
-    <div class="section-title">
-      <span class="subtitle">برندهای معتبر</span>
-      <h2>همکاری با بهترین‌ها</h2>
-      <div class="title-line"></div>
+    <div class="section-title text-center">
+      <span class="label">BRANDS</span>
+      <h2>برندهای معتبر</h2>
+      <p>محصولات اورجینال از بهترین برندهای جهانی</p>
     </div>
-    <div class="row g-3 align-items-center">
+    <div class="row g-3">
       <div class="col-4 col-md-2">
-        <div class="brand-item"><span>L'Oréal</span></div>
-      </div>
-      <div class="col-4 col-md-2">
-        <div class="brand-item"><span>MAYBELLINE</span></div>
-      </div>
-      <div class="col-4 col-md-2">
-        <div class="brand-item"><span>NIVEA</span></div>
-      </div>
-      <div class="col-4 col-md-2">
-        <div class="brand-item"><span>DIOR</span></div>
-      </div>
-      <div class="col-4 col-md-2">
-        <div class="brand-item"><span>CHANEL</span></div>
-      </div>
-      <div class="col-4 col-md-2">
-        <div class="brand-item"><span>GIVENCHY</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Newsletter -->
-<section class="newsletter-section">
-  <div class="container">
-    <div class="newsletter-box">
-      <div class="newsletter-icon"><i class="fas fa-envelope-open-text"></i></div>
-      <h3>عضویت در خبرنامه</h3>
-      <p>اولین نفری باشید که از تخفیف‌ها و محصولات جدید باخبر می‌شوید</p>
-      <div class="input-group-newsletter">
-        <input type="email" placeholder="ایمیل خود را وارد کنید">
-        <button class="btn-subscribe">عضویت</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="row g-5">
-      <div class="col-lg-4 col-md-6">
-        <div class="footer-logo">لوکس<span>بیوتی</span></div>
-        <p class="footer-about">فروشگاه آنلاین لوازم آرایشی و بهداشتی، با بیش از ۵۰۰ محصول اورجینال از بهترین برندهای جهانی. ما متعهدیم بهترین تجربه خرید را برای شما فراهم کنیم.</p>
-        <div class="footer-social">
-          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
-          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        <div class="brand-logo-box">
+          <div class="brand-icon">L'Oréal</div>
+          <span class="brand-name">لورآل</span>
         </div>
       </div>
-      <div class="col-lg-2 col-md-6">
-        <h6 class="footer-title">دسترسی سریع</h6>
+      <div class="col-4 col-md-2">
+        <div class="brand-logo-box">
+          <div class="brand-icon">Mayb.</div>
+          <span class="brand-name">مایبلین</span>
+        </div>
+      </div>
+      <div class="col-4 col-md-2">
+        <div class="brand-logo-box">
+          <div class="brand-icon">NIVEA</div>
+          <span class="brand-name">نیوآ</span>
+        </div>
+      </div>
+      <div class="col-4 col-md-2">
+        <div class="brand-logo-box">
+          <div class="brand-icon">Dior</div>
+          <span class="brand-name">دیور</span>
+        </div>
+      </div>
+      <div class="col-4 col-md-2">
+        <div class="brand-logo-box">
+          <div class="brand-icon">CHANEL</div>
+          <span class="brand-name">شنل</span>
+        </div>
+      </div>
+      <div class="col-4 col-md-2">
+        <div class="brand-logo-box">
+          <div class="brand-icon">Vaseline</div>
+          <span class="brand-name">وازلین</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 9. ALL PRODUCTS ========== -->
+<section class="products-section">
+  <div class="container">
+    <div class="section-title text-center">
+      <span class="label">PRODUCTS</span>
+      <h2>همه محصولات</h2>
+      <p>کشف کنید، انتخاب کنید، زیبا باشید</p>
+    </div>
+    <div class="row g-3">
+      <!-- 12 product cards, 4-col grid, 3 rows -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=60" alt="محصول">
+            <div class="product-badge-wrap"><span class="badge-discount">۲۰٪</span></div>
+          </div>
+          <div class="product-body">
+            <div class="product-brand">لورآل</div>
+            <div class="product-name">کرم مرطوب‌کننده روزانه</div>
+            <div class="product-stars">★★★★☆ <span style="color:#999;font-size:0.7rem;">(۱۲۴)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۱۵۸,۰۰۰</span>
+              <span class="price-old">۱۹۸,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=61" alt="محصول">
+          </div>
+          <div class="product-body">
+            <div class="product-brand">نیوآ</div>
+            <div class="product-name">لوسیون بدن آبرسان</div>
+            <div class="product-stars">★★★★★ <span style="color:#999;font-size:0.7rem;">(۸۷)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۸۵,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=62" alt="محصول">
+            <div class="product-badge-wrap"><span class="badge-discount">۳۵٪</span></div>
+          </div>
+          <div class="product-body">
+            <div class="product-brand">مایبلین</div>
+            <div class="product-name">ریمل حجم‌دهنده</div>
+            <div class="product-stars">★★★★☆ <span style="color:#999;font-size:0.7rem;">(۲۱۳)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۱۱۵,۰۰۰</span>
+              <span class="price-old">۱۷۷,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=63" alt="محصول">
+          </div>
+          <div class="product-body">
+            <div class="product-brand">شنل</div>
+            <div class="product-name">رژ لب مایع</div>
+            <div class="product-stars">★★★★★ <span style="color:#999;font-size:0.7rem;">(۴۵)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۳۴۵,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=64" alt="محصول">
+            <div class="product-badge-wrap"><span class="badge-discount">۱۵٪</span></div>
+          </div>
+          <div class="product-body">
+            <div class="product-brand">لورآل</div>
+            <div class="product-name">شامپو ضد ریزش مو</div>
+            <div class="product-stars">★★★★☆ <span style="color:#999;font-size:0.7rem;">(۱۵۸)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۱۲۵,۰۰۰</span>
+              <span class="price-old">۱۴۷,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=65" alt="محصول">
+          </div>
+          <div class="product-body">
+            <div class="product-brand">دیور</div>
+            <div class="product-name">پودر فیکساتور صورت</div>
+            <div class="product-stars">★★★★★ <span style="color:#999;font-size:0.7rem;">(۳۲)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۵۶۵,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=66" alt="محصول">
+            <div class="product-badge-wrap"><span class="badge-discount">۲۵٪</span></div>
+          </div>
+          <div class="product-body">
+            <div class="product-brand">نیوآ</div>
+            <div class="product-name">ضدآفتاب پوست حساس</div>
+            <div class="product-stars">★★★★☆ <span style="color:#999;font-size:0.7rem;">(۹۷)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۱۶۵,۰۰۰</span>
+              <span class="price-old">۲۲۰,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=67" alt="محصول">
+          </div>
+          <div class="product-body">
+            <div class="product-brand">مایبلین</div>
+            <div class="product-name">کانسیلر بی‌نقص</div>
+            <div class="product-stars">★★★★★ <span style="color:#999;font-size:0.7rem;">(۱۸۱)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۱۳۸,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=68" alt="محصول">
+            <div class="product-badge-wrap"><span class="badge-discount">۴۰٪</span></div>
+          </div>
+          <div class="product-body">
+            <div class="product-brand">لورآل</div>
+            <div class="product-name">سرم آنتی‌ایجینگ</div>
+            <div class="product-stars">★★★★☆ <span style="color:#999;font-size:0.7rem;">(۶۳)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۲۱۰,۰۰۰</span>
+              <span class="price-old">۳۵۰,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=69" alt="محصول">
+          </div>
+          <div class="product-body">
+            <div class="product-brand">وازلین</div>
+            <div class="product-name">بالم لب ترمیم‌کننده</div>
+            <div class="product-stars">★★★★★ <span style="color:#999;font-size:0.7rem;">(۳۲۴)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۴۵,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=70" alt="محصول">
+            <div class="product-badge-wrap"><span class="badge-discount">۱۸٪</span></div>
+          </div>
+          <div class="product-body">
+            <div class="product-brand">شنل</div>
+            <div class="product-name">خط چشم ماندگار</div>
+            <div class="product-stars">★★★★☆ <span style="color:#999;font-size:0.7rem;">(۷۸)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۲۸۰,۰۰۰</span>
+              <span class="price-old">۳۴۱,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://picsum.photos/300/300?random=71" alt="محصول">
+          </div>
+          <div class="product-body">
+            <div class="product-brand">دیور</div>
+            <div class="product-name">عطر Miss Dior 50ml</div>
+            <div class="product-stars">★★★★★ <span style="color:#999;font-size:0.7rem;">(۵۲)</span></div>
+            <div class="product-price-row">
+              <span class="price-new">۱,۲۵۰,۰۰۰</span>
+            </div>
+            <button class="btn-add-cart" onclick="location.href='cart.html'">افزودن به سبد</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="products.html" class="btn-see-all">مشاهده همه محصولات</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 10. BLOG SECTION ========== -->
+<section class="blog-section">
+  <div class="container">
+    <div class="section-title text-center">
+      <span class="label">MAGAZINE</span>
+      <h2>مجله زیبایی</h2>
+      <p>آخرین مطالب، راهنماها و ترندهای دنیای زیبایی</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-12 col-md-4">
+        <div class="blog-card">
+          <img src="https://picsum.photos/400/250?random=80" alt="مقاله">
+          <div class="blog-card-body">
+            <div class="blog-cat">مراقبت پوست</div>
+            <div class="blog-title">۵ راز مراقبت از پوست در فصل تابستان</div>
+            <div class="blog-excerpt">در فصل گرما پوست شما به مراقبت ویژه نیاز دارد. با این ۵ نکته ساده پوستی شفاف و سالم داشته باشید.</div>
+            <div class="blog-meta"><i class="far fa-calendar" style="margin-left:4px;"></i> ۱۵ تیر ۱۴۰۳</div>
+            <a href="#" class="btn-read-more">ادامه مطلب</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="blog-card">
+          <img src="https://picsum.photos/400/250?random=81" alt="مقاله">
+          <div class="blog-card-body">
+            <div class="blog-cat">آرایش</div>
+            <div class="blog-title">ترندهای آرایش تابستان ۱۴۰۳</div>
+            <div class="blog-excerpt">امسال رنگ‌های طبیعی و پوست شیشه‌ای محبوب‌ترین ترندهای آرایشی هستند. با ما همراه باشید.</div>
+            <div class="blog-meta"><i class="far fa-calendar" style="margin-left:4px;"></i> ۸ تیر ۱۴۰۳</div>
+            <a href="#" class="btn-read-more">ادامه مطلب</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="blog-card">
+          <img src="https://picsum.photos/400/250?random=82" alt="مقاله">
+          <div class="blog-card-body">
+            <div class="blog-cat">مراقبت مو</div>
+            <div class="blog-title">چگونه موهایمان را در برابر آفتاب محافظت کنیم؟</div>
+            <div class="blog-excerpt">اشعه UV نه تنها برای پوست بلکه برای موها هم مضر است. این راهکارها را امتحان کنید.</div>
+            <div class="blog-meta"><i class="far fa-calendar" style="margin-left:4px;"></i> ۱ تیر ۱۴۰۳</div>
+            <a href="#" class="btn-read-more">ادامه مطلب</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="#" class="btn-see-all">مشاهده همه مقالات</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 11. FOOTER ========== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="footer-logo">لوکس<span>بیوتی</span></div>
+        <p class="footer-desc">فروشگاه آنلاین محصولات آرایشی و بهداشتی اورجینال با ضمانت اصالت کالا و ارسال سریع سراسری.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="footer-title">لینک‌های سریع</div>
         <ul class="footer-links">
-          <li><a href="home.html">صفحه اصلی</a></li>
+          <li><a href="home.html">خانه</a></li>
           <li><a href="products.html">محصولات</a></li>
-          <li><a href="#">تخفیف‌ها</a></li>
           <li><a href="#">برندها</a></li>
           <li><a href="#">وبلاگ</a></li>
+          <li><a href="#">تخفیف‌ها</a></li>
           <li><a href="#">درباره ما</a></li>
         </ul>
       </div>
-      <div class="col-lg-2 col-md-6">
-        <h6 class="footer-title">خدمات مشتریان</h6>
-        <ul class="footer-links">
-          <li><a href="#">راهنمای خرید</a></li>
-          <li><a href="#">پیگیری سفارش</a></li>
-          <li><a href="#">بازگشت کالا</a></li>
-          <li><a href="#">ضمانت اصالت</a></li>
-          <li><a href="#">سوالات متداول</a></li>
-        </ul>
+      <div class="col-6 col-md-3 col-lg-3">
+        <div class="footer-title">تماس با ما</div>
+        <div class="contact-item"><i class="fas fa-phone"></i><span>۰۲۱-۸۸۸۸-۱۲۳۴</span></div>
+        <div class="contact-item"><i class="fas fa-envelope"></i><span>info@luxebeauty.ir</span></div>
+        <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>تهران، خیابان ولیعصر، پلاک ۱۲۰</span></div>
+        <div class="contact-item"><i class="fas fa-clock"></i><span>شنبه تا پنجشنبه ۹ تا ۱۸</span></div>
       </div>
-      <div class="col-lg-4 col-md-6">
-        <h6 class="footer-title">تماس با ما</h6>
-        <div class="footer-contact-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>تهران، خیابان ولیعصر، پلاک ۱۲۰</span>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="footer-title">خبرنامه</div>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.6);margin-bottom:1rem;">برای دریافت آخرین تخفیف‌ها و پیشنهادات ویژه عضو خبرنامه ما شوید.</p>
+        <div class="newsletter-input">
+          <input type="email" placeholder="ایمیل شما">
+          <button>عضویت</button>
         </div>
-        <div class="footer-contact-item">
-          <i class="fas fa-phone"></i>
-          <span>۰۲۱-۸۸۱۲۳۴۵۶</span>
-        </div>
-        <div class="footer-contact-item">
-          <i class="fas fa-envelope"></i>
-          <span>info@luxbeauty.ir</span>
-        </div>
-        <div class="footer-contact-item">
-          <i class="fas fa-clock"></i>
-          <span>شنبه تا پنج‌شنبه، ۹ تا ۱۸</span>
+        <div style="margin-top:1rem;display:flex;gap:1rem;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:rgba(255,255,255,0.5);">
+            <i class="fas fa-truck" style="color:var(--color-primary);"></i> ارسال رایگان
+          </div>
+          <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:rgba(255,255,255,0.5);">
+            <i class="fas fa-shield-alt" style="color:var(--color-primary);"></i> ضمانت اصالت
+          </div>
+          <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:rgba(255,255,255,0.5);">
+            <i class="fas fa-undo" style="color:var(--color-primary);"></i> ۷ روز مرجوعی
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="container">
-      <p class="mb-0">© ۱۴۰۳ لوکس‌بیوتی — تمام حقوق محفوظ است. طراحی با ❤️ در ایران</p>
+    <div class="footer-bottom">
+      تمامی حقوق برای لوکس‌بیوتی محفوظ است &copy; ۱۴۰۳
     </div>
   </div>
 </footer>
 
-<!-- Scroll to Top -->
-<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+<!-- Scroll to top button -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
   <i class="fas fa-chevron-up"></i>
 </button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // Mobile menu toggle
+  function toggleMobileMenu() {
+    const m = document.getElementById('mobileMenu');
+    m.style.display = m.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // Countdown timer — counts down to next midnight
+  function initCountdown() {
+    const now = new Date();
+    const target = new Date(now);
+    target.setHours(23, 59, 59, 0);
+    if (now > target) target.setDate(target.getDate() + 1);
+
+    function update() {
+      const diff = target - new Date();
+      if (diff <= 0) { initCountdown(); return; }
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      const pad = n => String(n).padStart(2, '0');
+      document.getElementById('cd-h').textContent = pad(h);
+      document.getElementById('cd-m').textContent = pad(m);
+      document.getElementById('cd-s').textContent = pad(s);
+    }
+    update();
+    setInterval(update, 1000);
+  }
+  initCountdown();
+
   // Scroll to top visibility
-  window.addEventListener('scroll', () => {
+  window.addEventListener('scroll', function() {
     const btn = document.getElementById('scrollTop');
-    btn.classList.toggle('visible', window.scrollY > 300);
-  });
-
-  // Filter tabs
-  document.querySelectorAll('.filter-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
-
-  // Add to cart animation
-  document.querySelectorAll('.btn-add-cart').forEach(btn => {
-    btn.addEventListener('click', function() {
-      this.innerHTML = '<i class="fas fa-check"></i>';
-      this.style.background = '#27ae60';
-      setTimeout(() => {
-        this.innerHTML = '<i class="fas fa-plus"></i>';
-        this.style.background = '';
-      }, 1500);
-    });
+    btn.classList.toggle('visible', window.scrollY > 400);
   });
 </script>
 </body>
